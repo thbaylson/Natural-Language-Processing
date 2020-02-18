@@ -2,6 +2,7 @@
 \usepackage[margin=1in]{geometry}
 \usepackage{listings}
 \usepackage{graphicx}
+\usepackage{caption}
 \usepackage{fancyhdr}
 \usepackage{amsmath}
 \usepackage{enumitem}
@@ -113,7 +114,20 @@ Words in rule/request appear with order: subject, action, object
 System will have a simplified UI which may be used as a framework for accessing resources in various file system configurations and social networks
 
 MoSCoW \\
-% TODO: Moscow board
+\begin{table}[]
+\caption{MoSCoW Board}
+\begin{tabular}{lllll}
+ Must Have  Should Have  Could Have  Won't Have  \\
+ PBAAC model implementation  Basic GUI with function calls for business embedding and customization  Unstructured user sentences  Language support other than English  \\
+ UI  &  Data analytics  & \\
+ Appending distinct well-formed policies to a text file  &  Grammar Differences  & \\
+ &  &   Spellchecker   & \\
+ &  &   Auto-complete   & \\
+ &  &   Encryption of Policy File   & \\
+ &  &   Machine learning applied to analytics   & \\
+ &  &   Social Network Implementation   & \\
+\end{tabular}
+\end{table}
 
 Describe and show a storyboard that illustrates how your system will be used. \\
 Users will start our program via command line or some graphical application. Users may then type access control commands into the program. These commands may be written as natural-sounding sentences. The program will then parse the sentence into individual words. These individual words will be used with WordNet’s lexical database to ascertain their grammatical and syntactical significance. The program will use the grammatical and syntactical data to generate a well-formed policy rule for access control based on the original natural-sounding sentence. The newly generated policy will be cross examined with an existing policy text file to ensure the same policy does not already exist. If the newly generated policy does not exist in the policy text file, it will be appended to the policy text file.
@@ -127,43 +141,33 @@ How will you test the system? \\
 We will utilize the pytest framework to help streamline the development process. Additionally, we will use Dr. Morovat’s policy reader to ensure our program generates the well-formed format.
 What is the proposed timeline for the semester?  \\
 % TODO: Table for Date, Deliverable, Description
-Thurs 2/13
-Proposal complete with timetable
-2/27
-Receive input via command interface
-Accept and validate input
-Handle any errors with input
-Test on testing frameworks
-3/12
-Sorting words into parts of speech
-Recognize access actions (“read” / “write” / “access”) and their negations
-Poster content preparation
-3/26
-Accept specific object references (“house.png”)
-Accept generalized object references and groups by filetype (“photos”, “documents”)
-4/09
-GUI implementation / function calls
-Generate well-formed format
-Append the formatted rule to user policy file
-Test with policy reader program
-4/12
-Poster due
-4/19 
-Poster demonstration
-4/23
-Confirm full functionality with policy reader program
-Capstone I scope complete
+\begin{table}[]
+\caption{Project Time Table}
+\begin{tabular}{llll}
+    Date   Deliverable     Description \\
+    2/13   Proposal with Timetable   & \\
+    2/27   Input via interface, accept and validate, handle errors, test on frameworks  & \\
+    3/12     Sorting words into parts of speech, recognize access actions (“read” / “write” / “access”) and their negations, poster content preparation    & \\
+    3/26   Accept specific object references (“house.png”), Accept generalized object references and groups by filetype (“photos”, “documents”)  & \\
+    4/09    GUI implementation / function calls, Generate well-formed format, Append the formatted rule to user policy file, Test with policy reader program    & \\
+    4/12    Poster due  & \\
+    4/19    Poster demonstration    & \\
+    4/23    Confirm full functionality with policy reader program, Capstone I scope complete   & \\
 
-Do a mapping from your project to the courses that you took. What courses –including last semester’s capstone (?) do you think prepared you for this semester? What will you have to learn on your own? \\
-CS 150 & 151- Intro to Problem-Solving I & II: Intro to python and working with data structures
-CS 263- Software Eng.: Breaking down the project into tasks, preparing proposal, specifics like the MoSCoW analysis, etc.
-CS 351- Data Structs. & Algors.: Working with graph data structures
-CS 352- Prog. Lang.: Separating input for parsing (lexemes, etc.)
-Math 270- Statistics: Any analytics we perform are likely to build on the principles of 270
-Math 310- Discrete Structs.: Learning about graph structures and, more specifically, markov chains.
-Will have to learn PyTest
-Will have to learn how to implement a theoretical model (PBAAC)
+\end{tabular}
+\end{table}
 
+
+Finally, in reviewing how specific coursework we have completed will reflect in this project, we provide this list:
+\begin{enumerate}
+    \item CS 150 & 151- Intro to Problem-Solving I & II: Intro to python and working with data structures
+    \item CS 263- Software Eng.: Breaking down the project into tasks, preparing proposal, specifics like the MoSCoW analysis, etc.
+    \item CS 351- Data Structs. & Algors.: Working with graph data structures
+    \item CS 352- Prog. Lang.: Separating input for parsing (lexemes, etc.)
+    \item Math 270- Statistics: Any analytics we perform are likely to build on the principles of 270
+    \item Math 310- Discrete Structs.: Learning about graph structures and, more specifically, markov chains.
+    \item On our own, we will be learning learn PyTest and approaches to implement a theoretical model in programming practice (PBAAC).
+\end{enumerate}
 
 % A list
 % \begin{enumerate}
@@ -176,25 +180,6 @@ Will have to learn how to implement a theoretical model (PBAAC)
     % \includegraphics[width=0.90\textwidth]{fig2.pdf}
     % \caption{NFA}
 % \end{figure}
-
-% Some code
-% \begin{lstlisting}[language=java, numbers=left]
-% package server;
-% import common.Card;
-% import common.Type;
-% public class TcpMagicServer extends AbstractMagicServer {
-%     public TcpMagicServer() throws FileNotFoundException {
-%         super();
-%     }
-%     public class TcpMagicServer extends AbstractMagicServer {
-%     public TcpMagicServer(int port, CardSource source) throws FileNotFoundException{
-%         super(port, source);
-%     }
-%     public TcpMagicServer(int port) throws FileNotFoundException{
-%         super(port);
-%     }
-% }
-% \end{lstlisting}
 
 % Bibliography info
 \bibliography{proposal-bib}
