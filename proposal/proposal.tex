@@ -43,8 +43,10 @@
 \section{Introduction}
 What is the problem? \\
 A benefit of file systems, whether locally housed or “in the cloud”, is allowing for the increased work efficiency of offering different users in the network access to the same resources. But given the growing desire for companies to give their employees this level of efficient access to data, that data is at risk anytime security isn’t easy to establish for its users. And, in the worst cases, where something like a credential file may itself be accessed by a user who should not have access, a security failure cascade may be initiated that could lead to very serious problems for the company and its users.
+
 Why is it important? \\
 Given this, it is extremely important that users can easily and efficiently control access to their data, starting from simple and straightforward privacy purposes all the way to fully customized schedules of access to highly confidential data.
+
 How do you plan to solve it? \\
 In order to meet this goal, easy and effective means to protect information and resources must be made available to those responsible for its security. 
 Being that natural language is the most natural way to input a command, we will allow for the natural input of rules both to build effective access policies for a given resource and for the input of request inquiries to establish whether or not the requesting entity has authorized access to that resource.
@@ -73,15 +75,10 @@ In a given Network, which can be interpreted as a directed labeled graph (vertic
     \item $E \subseteq N \times N \times \Sigma \times W$ is the edges of existing connections
 \end{enumerate}
 
-Users will define policies and make inquiries in English via an access control interface, such that a well-formed format will transform user defined policies into system rules and user defined inquiries will be used as system queries.
-The source of our data will be English sentences typed in a natural-sounding way.
+Users will define policies and make inquiries in English via an access control interface, such that a well-formed format will transform user defined policies into system rules and user defined inquiries will be used as system queries. The source of our data will be English sentences typed in a natural-sounding way.
 
 What are the specific user requirements? \\
-Our system must process natural user command sentences in a given structure within a basic UI, resulting in appending data to policy file in the user's directory in the format to be demonstrated below.
-This will require a simple UI for access control input, which, though ultimately intended for web-use, could well be presented within a desktop application.
-It will be flexible and responsive, as companies may wish to have more granular control over the presentation of their access application.
-In the event of an error in input or discovery, depending on certain circumstances, the program may ask for further clarification.
-A program already exists which will manage the basic security functionality (reading the policy files and acting on their instruction when queried), and it also handles conflicts (giving priority to most recent addition).
+Our system must process natural user command sentences in a given structure within a basic UI, resulting in appending data to policy file in the user's directory in the format to be demonstrated below. This will require a simple UI for access control input, which, though ultimately intended for web-use, could well be presented within a desktop application. It will be flexible and responsive, as companies may wish to have more granular control over the presentation of their access application. In the event of an error in input or discovery, depending on certain circumstances, the program may ask for further clarification. A program already exists which will manage the basic security functionality (reading the policy files and acting on their instruction when queried), and it also handles conflicts (giving priority to most recent addition).
 
 List a company and organization that may use the features of this program. \\
 Facebook would use some features
@@ -168,18 +165,6 @@ Finally, in reviewing how specific coursework we have completed will reflect in 
     \item Math 310- Discrete Structs.: Learning about graph structures and, more specifically, markov chains.
     \item On our own, we will be learning learn PyTest and approaches to implement a theoretical model in programming practice (PBAAC).
 \end{enumerate}
-
-% A list
-% \begin{enumerate}
-    % \item Here's some math $$ 2 + 3 = 9 $$
-% \end{enumerate}
-   
-% A figure
-% \begin{figure}[h!]
-    % \centering
-    % \includegraphics[width=0.90\textwidth]{fig2.pdf}
-    % \caption{NFA}
-% \end{figure}
 
 % Bibliography info
 \bibliography{proposal-bib}
