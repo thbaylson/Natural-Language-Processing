@@ -27,11 +27,11 @@
 \begin{document}
 
 \lhead{
-    CS 495
+    CS 495 \\
     Capstone Proposal
 }
 \rhead{
-    Tyler Baylson
+    Tyler Baylson \\ 
     Andrew Sexton
 }
 
@@ -67,10 +67,10 @@ Though research has been performed (as discussed below), no specific approach ha
 What specific data did you use (or plan to use)? What is the source? \\
 In a given Network, which can be interpreted as a directed labeled graph (vertices connected by edges)
 \begin{enumerate}
-    \item N is a finite set of subjects (S) and objects (O), that may include an environmental condition.
-    \item Ʃ is a finite set of relationship types (labels for connections).
-    \item W is a number attached to a relationship between two subjects. This is a percentage of trust between two users.
-    \item E ⊆ N x N x Ʃ x W is the edges of existing connections
+    \item $N$ is a finite set of subjects $(S)$ and objects $(O)$, that may include an environmental condition.
+    \item $\Sigma$ is a finite set of relationship types (labels for connections).
+    \item $W$ is a number attached to a relationship between two subjects. This is a percentage of trust between two users.
+    \item $E \subseteq N \times N \times \Sigma \times W$ is the edges of existing connections
 \end{enumerate}
 
 Users will define policies and make inquiries in English via an access control interface, such that a well-formed format will transform user defined policies into system rules and user defined inquiries will be used as system queries.
@@ -113,7 +113,7 @@ Words in policy/ inquiry appear with order: subject, verb, object
 Words in rule/request appear with order: subject, action, object
 System will have a simplified UI which may be used as a framework for accessing resources in various file system configurations and social networks
 
-MoSCoW \\
+% TODO: Fix this table
 \begin{table}[]
 \caption{MoSCoW Board}
 \begin{tabular}{lllll}
@@ -140,7 +140,7 @@ Dr. Morovat’s program handles the security activities themselves.
 How will you test the system? \\
 We will utilize the pytest framework to help streamline the development process. Additionally, we will use Dr. Morovat’s policy reader to ensure our program generates the well-formed format.
 What is the proposed timeline for the semester?  \\
-% TODO: Table for Date, Deliverable, Description
+% TODO: Fix this table
 \begin{table}[]
 \caption{Project Time Table}
 \begin{tabular}{llll}
@@ -160,9 +160,9 @@ What is the proposed timeline for the semester?  \\
 
 Finally, in reviewing how specific coursework we have completed will reflect in this project, we provide this list:
 \begin{enumerate}
-    \item CS 150 & 151- Intro to Problem-Solving I & II: Intro to python and working with data structures
+    \item CS 150 \& 151- Intro to Problem-Solving I \& II: Intro to python and working with data structures
     \item CS 263- Software Eng.: Breaking down the project into tasks, preparing proposal, specifics like the MoSCoW analysis, etc.
-    \item CS 351- Data Structs. & Algors.: Working with graph data structures
+    \item CS 351- Data Structs. \& Algors.: Working with graph data structures
     \item CS 352- Prog. Lang.: Separating input for parsing (lexemes, etc.)
     \item Math 270- Statistics: Any analytics we perform are likely to build on the principles of 270
     \item Math 310- Discrete Structs.: Learning about graph structures and, more specifically, markov chains.
