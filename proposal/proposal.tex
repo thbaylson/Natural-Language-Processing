@@ -109,42 +109,39 @@ The well-formed format template we will use indicates the following:
     \item Words in rule/request appear with order: subject, action, object
 \end{itemize}
 
-The system itself will operate on, at the very least, a simple UI which may be used as a framework for accessing resources in various file system configurations and social networks. Please refer to \ref{tab:1} for our MoSCoW table of further feature considerations.
-
 \begin{table}[p]
-\label{tab:1}
-\begin{center}
-    \begin{tabular}{ | m{1.3in} | m{1.3in}| m{1.3in} | m{1.3in} | } 
-    \hline
-    Must Have & Should Have & Could Have & Won't Have \\ 
-    \hline
-    \hline
-    PBAAC Implementation & Basic GUI with function calls for business embedding and customization & Unstructured user sentences & Language support other than English \\ 
-    \hline
-    Appending distinct well-formed policies to a text file & Recognition of grammatical differences & Spellchecker &   \\ 
-    \hline
-      &   & Auto-complete &   \\ 
-    \hline
-      &   & Encryption of Policy File &   \\ 
-    \hline
-      &   & Machine learning applied to analytics &   \\ 
-    \hline
-      &   & Social Network Demo &   \\ 
-    \hline
-    \end{tabular}
-    \caption{MoSCoW Board}
-\end{center}
-\end{table}
+    \begin{center}
+        \begin{tabular}{ | m{1.3in} | m{1.3in}| m{1.3in} | m{1.3in} | } 
+        \hline
+        Must Have & Should Have & Could Have & Won't Have \\ 
+        \hline
+        \hline
+        PBAAC Implementation & Basic GUI with function calls for business embedding and customization & Unstructured user sentences & Language support other than English \\ 
+        \hline
+        Appending distinct well-formed policies to a text file & Recognition of grammatical differences & Spellchecker &   \\ 
+        \hline
+          &   & Auto-complete &   \\ 
+        \hline
+          &   & Encryption of Policy File &   \\ 
+        \hline
+          &   & Machine learning applied to analytics &   \\ 
+        \hline
+          &   & Social Network Demo &   \\ 
+        \hline
+        \end{tabular}
+        \caption{MoSCoW Board}
+        \label{table:1}
+    \end{center}
+    \end{table}
+
+The system itself will operate on, at the very least, a simple UI which may be used as a framework for accessing resources in various file system configurations and social networks. Please refer to Table \ref{table:1} for our MoSCoW table of further feature considerations.
 
 % Describe and show a storyboard that illustrates how your system will be used. \\
 Users will start our program via command line or graphical application. They may then type access control commands into the program. These commands may be written as natural-sounding sentences. The program will then parse the sentence into individual words. These individual words will be used with WordNet’s lexical database to ascertain their grammatical and syntactical significance. The program will use the grammatical and syntactical data to generate a well-formed policy rule for access control based on the original natural-sounding sentence. The newly generated policy will be cross examined with an existing policy text file to ensure the same policy does not already exist. If the newly generated policy does not exist in the policy text file, it will be appended to the policy text file. Dr. Morovat’s own program handles the security activities as determined by the policy rule or inquiry.
 
 \section{Plan}
-% How will you test the system? \\
-Please refer to \ref{tab:2} for our semester schedule of implementations.
 
 \begin{table}[p]
-    \label{tab:2}
     \begin{center}
         \begin{tabular}{ | m{0.4in} | m{4in}| m{1.6in} | }
         \hline
@@ -168,8 +165,12 @@ Please refer to \ref{tab:2} for our semester schedule of implementations.
         \hline
         \end{tabular}
         \caption{Project Time Table}
+        \label{table:2}
     \end{center}
 \end{table}
+
+% How will you test the system? \\
+Please refer to Table \ref{table:2} for our semester schedule of implementations.
 
 We will utilize the pytest framework to help streamline the development process and encourage test driven development for the system as it gains complexity. On that note, we have also reviewed how specific courses we have completed will reflect in this project:
 \begin{enumerate}
