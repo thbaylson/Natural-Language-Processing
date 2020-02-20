@@ -30,18 +30,17 @@
 \begin{document}
 
 \lhead{
-    CS 495 \\
-    Capstone Proposal
+    CS 495: Capstone Proposal
 }
 \rhead{
-    Tyler Baylson \\ 
-    Andrew Sexton
+    Tyler Baylson, Andrew Sexton     
 }
 
 % The title
-\begin{center}
-\textbf{Converting an English Sentence to a Format Understandable by Computers}
-\end{center}
+\title{Capstone Proposal: Converting an English Sentence to a Format Understandable by Computers}
+\author{Tyler Baylson, Andrew Sexton}
+\date{Spring, 2020}
+\maketitle
 
 \section{Introduction}
 % What is the problem? \\
@@ -109,6 +108,27 @@ The well-formed format template we will use indicates the following:
     \item Words in rule/request appear with order: subject, action, object
 \end{itemize}
 
+The system itself will operate on, at the very least, a simple UI which may be used as a framework for accessing resources in various file system configurations and social networks. Please refer to Table \ref{table:1} for our MoSCoW table of further feature considerations.
+
+% Describe and show a storyboard that illustrates how your system will be used. \\
+Users will start our program via command line or graphical application. They may then type access control commands into the program. These commands may be written as natural-sounding sentences. The program will then parse the sentence into individual words. These individual words will be used with WordNet’s lexical database to ascertain their grammatical and syntactical significance. The program will use the grammatical and syntactical data to generate a well-formed policy rule for access control based on the original natural-sounding sentence. The newly generated policy will be cross examined with an existing policy text file to ensure the same policy does not already exist. If the newly generated policy does not exist in the policy text file, it will be appended to the policy text file. Dr. Morovat’s own program handles the security activities as determined by the policy rule or inquiry.
+
+\section{Plan}
+
+% How will you test the system? \\
+Please refer to Table \ref{table:2} for our semester schedule of implementations.
+
+We will utilize the pytest framework to help streamline the development process and encourage test driven development for the system as it gains complexity. On that note, we have also reviewed how specific courses we have completed will reflect in this project:
+\begin{enumerate}
+    \item CS 150 \& 151, Introduction to Problem-Solving I \& II: Basic python comprehension and working with data structures
+    \item CS 263, Software Engineering: Breaking down the project into tasks, preparing proposal, specifics like the MoSCoW analysis, etc.
+    \item CS 351, Data Structures and Algorithms: Graph data structures and traversal
+    \item CS 352, Programming Languages: Further functional and object-oriented data processing, preparaing input for parsing
+    \item Math 270, Statistics: Any analytics we perform in Capstone II are likely to build on the principles of 270
+    \item Math 310, Discrete Structures: Learning about graph structures and, more specifically, markov chains, which are applicable to our WordNet approach
+    \item And on our own, we will be learning learn PyTest and approaches to implement a theoretical model in programming practice (PBAAC).
+\end{enumerate}
+
 \begin{table}[p]
     \begin{center}
         \begin{tabular}{ | m{1.3in} | m{1.3in}| m{1.3in} | m{1.3in} | } 
@@ -132,14 +152,7 @@ The well-formed format template we will use indicates the following:
         \caption{MoSCoW Board}
         \label{table:1}
     \end{center}
-    \end{table}
-
-The system itself will operate on, at the very least, a simple UI which may be used as a framework for accessing resources in various file system configurations and social networks. Please refer to Table \ref{table:1} for our MoSCoW table of further feature considerations.
-
-% Describe and show a storyboard that illustrates how your system will be used. \\
-Users will start our program via command line or graphical application. They may then type access control commands into the program. These commands may be written as natural-sounding sentences. The program will then parse the sentence into individual words. These individual words will be used with WordNet’s lexical database to ascertain their grammatical and syntactical significance. The program will use the grammatical and syntactical data to generate a well-formed policy rule for access control based on the original natural-sounding sentence. The newly generated policy will be cross examined with an existing policy text file to ensure the same policy does not already exist. If the newly generated policy does not exist in the policy text file, it will be appended to the policy text file. Dr. Morovat’s own program handles the security activities as determined by the policy rule or inquiry.
-
-\section{Plan}
+\end{table}
 
 \begin{table}[p]
     \begin{center}
@@ -168,20 +181,6 @@ Users will start our program via command line or graphical application. They may
         \label{table:2}
     \end{center}
 \end{table}
-
-% How will you test the system? \\
-Please refer to Table \ref{table:2} for our semester schedule of implementations.
-
-We will utilize the pytest framework to help streamline the development process and encourage test driven development for the system as it gains complexity. On that note, we have also reviewed how specific courses we have completed will reflect in this project:
-\begin{enumerate}
-    \item CS 150 \& 151, Introduction to Problem-Solving I \& II: Basic python comprehension and working with data structures
-    \item CS 263, Software Engineering: Breaking down the project into tasks, preparing proposal, specifics like the MoSCoW analysis, etc.
-    \item CS 351, Data Structures and Algorithms: Graph data structures and traversal
-    \item CS 352, Programming Languages: Further functional and object-oriented data processing, preparaing input for parsing
-    \item Math 270, Statistics: Any analytics we perform in Capstone II are likely to build on the principles of 270
-    \item Math 310, Discrete Structures: Learning about graph structures and, more specifically, markov chains, which are applicable to our WordNet approach
-    \item And on our own, we will be learning learn PyTest and approaches to implement a theoretical model in programming practice (PBAAC).
-\end{enumerate}
 
 % Bibliography info
 \bibliography{proposal-bib}
