@@ -1,6 +1,7 @@
-import sys
-import spacy
+import os.path
 import re
+import spacy
+import sys
 
 def main(inp):
     nlp = spacy.load("en_core_web_sm")
@@ -11,7 +12,9 @@ def main(inp):
     #tokens = getTokens(processedInput)
     #print("\nMain [After getTokens()]:", tokens)
 
-    grammar = getGrammar(nlp(processedInput))
+    # The call nlp() uses the default model. To speed things up, we may want to define our own model
+    tokens = nlp(processedInput)
+    grammar = getGrammar(tokens)
     print("\nMain [After getGrammar()]:", grammar)
 
     syntaxLong = getSyntaxLong(grammar)
@@ -23,6 +26,8 @@ def main(inp):
     rule = getRule(syntaxShort)
     print("\nMain [After getRule()]:", rule)
 
+    writeToFile(rule)
+
 def processInput(inp):
     """ 
     Recieve command line input, search for errors, and split the input on
@@ -30,17 +35,17 @@ def processInput(inp):
     TODO: Write usage notes into README
     """
 
-    #Match the first command line argument independent of OS
+    # Match the first command line argument independent of OS
     matchObject = re.search('capstone.py', '.\\capstone.py')
     if matchObject != None:
-        #Trims off the command line file call
+        # Trims off the command line file call
         inp = inp[1:]
     return str(inp)
 
 """
 def getTokens(inp):
     Placeholder function to help set up PyTest
-    #SpaCy can tokenize. The call nlp() uses the default model. To speed things up, we may want to define our own model
+    #SpaCy can tokenize.
     return nlp(inp)
 """
 
@@ -77,9 +82,11 @@ def getRule(synShort):
     """ Placeholder function to help set up PyTest"""
     return synShort
 
-def alwaysTrue():
-    """ Placeholder function to help set up PyTest"""
-    return True
+def writeToFile(rule):
+    """ Prints the policy rule to the policy file"""
+    policyFile = open("policy.txt", "a")
+    policyFile.write("\n" + str(rule))
+    policyFile.close()
 
 if __name__ == "__main__":
     main(sys.argv)
