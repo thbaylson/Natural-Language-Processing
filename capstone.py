@@ -48,7 +48,8 @@ def main(inp:list) -> None:
 
 def process_input(inp:list) -> str:
     """ 
-    Recieve command line input and search for errors.
+    Recieve command line input, search for errors, and split the input on
+    word boundaries.
     TODO: Write usage notes into README
     """
 
@@ -74,6 +75,7 @@ def get_grammar(tokens:spacy.tokens.doc.Doc) -> dict:
     # Creates a dictionary with keys being the input words and their values being that input word's P.O.S.
     for token in tokens:
         grammar[(token.text).lower()] = [(token.lemma_).lower(), (token.pos_).lower(), (token.dep_).lower()]
+
 
     # Remove punction from the grammar
     keys_to_remove = []

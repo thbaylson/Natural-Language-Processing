@@ -14,12 +14,12 @@ import capstone as cp
 nlp = spacy.load("en_core_web_sm")
 
 @pytest.fixture
-def simpleInput():
+def simple_input():
     inp =  'Bob can edit my documents'
-    wordList = ['Bob', 'can', 'edit', 'my', 'documents']
+    word_list = ['Bob', 'can', 'edit', 'my', 'documents']
     
     # Heavily edited, needs review
-    grammarInfo = {
+    grammar_info = {
         'bob': ['propn', 'nsubj'],
         'can': ['verb', 'aux'],
         'edit': ['verb', 'root'],
@@ -28,7 +28,7 @@ def simpleInput():
     }
     
     # Around this point kick out unneccesary words
-    syntaxInfoLong = {
+    syntax_info_long = {
         'bob': ['noun', 'subject'],
         'edit': ['verb', 'main'],
         'my': ['adjective', 'possessive'],
@@ -36,7 +36,7 @@ def simpleInput():
     }
 
     # t1 is a timestamp, this may not always be t1
-    syntaxInfoShort = {
+    syntax_info_short = {
         't1': 0,
         'bob': ['subject', '∃', 'accessing user'], 
         'edit': ['action', 'edit'],
@@ -48,7 +48,7 @@ def simpleInput():
     rule = '{(∃ user (name: Bob)), (action (name: edit)), (∀ target_resource (name: document), \
         ∃ target_user (name: _myself)), (environment_conditions (time: >office hour, weekend))} - t1'
 
-    return [inp, wordList, grammarInfo, syntaxInfoLong, syntaxInfoShort, rule]
+    return [inp, word_list, grammar_info, syntax_info_long, syntax_info_short, rule]
 
 #def test_tokens(simpleInput):
 #    assert cp.getTokens(simpleInput[0]) == simpleInput[1]
@@ -59,32 +59,32 @@ def simpleInput():
 
 # Test negations of access words
 
-def test_grammar(simpleInput):
-    tokens = nlp(simpleInput[0])
-    assert cp.getGrammar(tokens) == simpleInput[2]
+def test_grammar(simple_input):
+    tokens = nlp(simple_input[0])
+    assert cp.get_grammar(tokens) == simple_input[2]
 
-def test_syntaxLong(simpleInput):
-    assert cp.getSyntaxLong(simpleInput[2]) == simpleInput[3]
+def test_syntax_long(simple_input):
+    assert cp.get_syntax_long(simple_input[2]) == simple_input[3]
 
-def test_syntaxShort(simpleInput):
-    assert cp.getSyntaxShort(simpleInput[3]) == simpleInput[4]
+def test_syntax_short(simple_input):
+    assert cp.get_syntax_short(simple_input[3]) == simple_input[4]
 
-def test_rule(simpleInput):
-    assert cp.getRule(simpleInput[4]) == simpleInput[5]
+def test_rule(simple_input):
+    assert cp.get_rule(simple_input[4]) == simple_input[5]
 
-def test_writeToFile(simpleInput):
+def test_write_to_file(simple_input):
     """ This test is currently failing because:
     1) We do not have functionality for generating the rule properly
     2) Our rule is defined using invalid unicode characters"""
     # Collect the current contents of the policy file
-    policyFile = open("policy.txt", "r")
-    oldFileContents = policyFile.read()
-    policyFile.close()
+    policy_file = open("policy.txt", "r")
+    old_file_contents = policy_file.read()
+    policy_file.close()
 
     # Append the new policy
-    cp.writeToFile(simpleInput[5])
+    cp.write_to_file(simple_input[5])
 
     # Assert that the policy has been appended correctly
-    policyFile = open("policy.txt", "r")
-    newFileContents = policyFile.read()
-    assert newFileContents == (oldFileContents + "\n" + str(simpleInput[5]))
+    policy_file = open("policy.txt", "r")
+    new_file_contents = policy_file.read()
+    assert new_file_contents == (old_file_contents + "\n" + str(simple_input[5]))
