@@ -73,9 +73,9 @@ def test_writeToFile(complexInput):
     policyFile.close()
 
     # Append the new policy
-    cp.writeToFile(simpleInput[5])
+    cp.writeToFile(complexInput[5])
 
     # Assert that the policy has been appended correctly
     policyFile = open("policy.txt", "r")
     newFileContents = policyFile.read()
-    assert newFileContents == (oldFileContents + "\n" + str(simpleInput[5]))
+    assert newFileContents == (oldFileContents + "\n" + str(complexInput[5]))

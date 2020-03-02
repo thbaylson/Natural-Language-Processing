@@ -27,9 +27,10 @@ def simpleInput():
         'documents': ['noun', 'dobj']
     }
     
+    # Around this point kick out unneccesary words
     syntaxInfoLong = {
         'bob': ['noun', 'subject'],
-        'can edit': ['verb', 'main'],
+        'edit': ['verb', 'main'],
         'my': ['adjective', 'possessive'],
         'documents': ['noun', 'plural']
     }
@@ -51,6 +52,12 @@ def simpleInput():
 
 #def test_tokens(simpleInput):
 #    assert cp.getTokens(simpleInput[0]) == simpleInput[1]
+
+# Parts of speech checker test ie: A sentence should have at least a subject, a verb, etc
+
+# Test subjects and resources against xml mock-database
+
+# Test negations of access words
 
 def test_grammar(simpleInput):
     tokens = nlp(simpleInput[0])

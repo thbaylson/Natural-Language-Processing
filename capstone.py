@@ -3,41 +3,58 @@ import re
 import spacy
 import sys
 
-def main(inp):
+from enum import Enum
+
+class AccessWords(Enum):
+    access = "access"
+    append = "append"
+    change = "change"
+    edit = "edit"
+    manipulate = "manipulate"
+    modify = "modify"
+    read = "read"
+    update = "update"
+    use = "use"
+    write = "write"
+
+def main(inp:list) -> None:
     nlp = spacy.load("en_core_web_sm")
 
-    processedInput = processInput(inp)
-    print("\nMain [After processInput()]:", processedInput)
+    processed_input = process_input(inp)
+    print("[After processInput()]:", processed_input)
 
     #tokens = getTokens(processedInput)
     #print("\nMain [After getTokens()]:", tokens)
 
     # The call nlp() uses the default model. To speed things up, we may want to define our own model
-    tokens = nlp(processedInput)
-    grammar = getGrammar(tokens)
-    print("\nMain [After getGrammar()]:", grammar)
+    tokens = nlp(processed_input)
 
-    syntaxLong = getSyntaxLong(grammar)
-    print("\nMain [After getSyntaxLong()]:", syntaxLong)
+    grammar = get_grammar(tokens)
+    print("\n[After getGrammar()]:", grammar)
 
-    syntaxShort = getSyntaxShort(syntaxLong)
-    print("\nMain [After getSyntaxShort()]:", syntaxShort)
+    syntax_long = get_syntax_long(grammar)
+    print("\n[After getSyntaxLong()]:", syntax_long)
 
-    rule = getRule(syntaxShort)
-    print("\nMain [After getRule()]:", rule)
+    syntax_short = get_syntax_short(syntax_long)
+    print("\n[After getSyntaxShort()]:", syntax_short)
 
-    writeToFile(rule)
+    rule = get_rule(syntax_short)
+    print("\n[After getRule()]:", rule)
 
-def processInput(inp):
+    print("Access: ", has_access_action(syntax_short))
+    print("Negation: ", has_negation(syntax_short))
+
+    write_to_file(rule)
+
+def process_input(inp:list) -> str:
     """ 
-    Recieve command line input, search for errors, and split the input on
-    word boundaries.
+    Recieve command line input and search for errors.
     TODO: Write usage notes into README
     """
 
     # Match the first command line argument independent of OS
-    matchObject = re.search('capstone.py', '.\\capstone.py')
-    if matchObject != None:
+    match_object = re.search('capstone.py', '.\\capstone.py')
+    if match_object != None:
         # Trims off the command line file call
         inp = inp[1:]
     return str(inp)
@@ -49,14 +66,14 @@ def getTokens(inp):
     return nlp(inp)
 """
 
-def getGrammar(tokens):
+def get_grammar(tokens:spacy.tokens.doc.Doc) -> dict:
     """ Placeholder function to help set up PyTest"""
     # SpaCy can find tokens and parts of speech at the same time
     grammar = {}
 
     # Creates a dictionary with keys being the input words and their values being that input word's P.O.S.
     for token in tokens:
-        grammar[(token.text).lower()] = [(token.pos_).lower(), (token.dep_).lower()]
+        grammar[(token.text).lower()] = [(token.lemma_).lower(), (token.pos_).lower(), (token.dep_).lower()]
 
     # Remove punction from the grammar
     keys_to_remove = []
@@ -67,26 +84,47 @@ def getGrammar(tokens):
     for key in keys_to_remove:
         del grammar[key]
 
-    print(grammar)
     return grammar
 
-def getSyntaxLong(grammar):
+def get_syntax_long(grammar:dict) -> dict:
     """ Placeholder function to help set up PyTest"""
     return grammar
 
-def getSyntaxShort(synLong):
+def get_syntax_short(syn_long:dict) -> dict:
     """ Placeholder function to help set up PyTest"""
-    return synLong
+    return syn_long
 
-def getRule(synShort):
+def get_rule(syn_short:dict) -> dict:
     """ Placeholder function to help set up PyTest"""
-    return synShort
+    return syn_short
 
-def writeToFile(rule):
+def write_to_file(rule:dict) -> None:
     """ Prints the policy rule to the policy file"""
-    policyFile = open("policy.txt", "a")
-    policyFile.write("\n" + str(rule))
-    policyFile.close()
+    policy_file = open("policy.txt", "a")
+    policy_file.write("\n" + str(rule))
+    policy_file.close()
+
+def has_access_action(dictionary:dict) -> bool:
+    """ Searches a dictionary of words to identify if it contains an access word."""
+    has_access = False
+    for key in dictionary:
+        if ('root' in dictionary[key]):
+
+            access_words = [item.value for item in AccessWords]
+            for key2 in dictionary[key]:
+                if key2 in access_words:
+                    has_access = True
+    
+    return has_access
+
+def has_negation(dictionary:dict) -> bool:
+    """ Searches a dictionary of words to identify if it contains a negating word."""
+    has_negation = False
+    for key in dictionary:
+        if 'neg' in dictionary[key]:
+            has_negation = True
+    
+    return has_negation
 
 if __name__ == "__main__":
     main(sys.argv)
