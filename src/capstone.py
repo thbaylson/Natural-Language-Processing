@@ -46,6 +46,8 @@ def main(inp: list) -> None:
     print("Access: ", has_access_action(syntax_short))
     print("Negation: ", has_negation(syntax_short))
 
+    print_grammar(grammar)
+
     write_to_file(rule)
 
 
@@ -63,6 +65,23 @@ def process_input(inp: list) -> str:
         inp = inp[1:]
     return str(inp)
 
+
+def print_grammar(grammar:dict) -> dict:
+    output = "\n\nProcessed Info:\nWord\t\tPart of " \
+             "Speech\tNegation/Access\n"
+    word_index = 0
+    part_of_speech_index = 1
+
+    for word in grammar:
+        output += grammar[word][word_index] + "\t\t"
+        output += grammar[word][part_of_speech_index] + "\t\t"
+        if is_negation_word(grammar[word]):
+            output += "\t-"
+        if is_access_word(word):
+            output += "\t*"
+        output += "\n"
+
+    print(output)
 
 """
 def getTokens(inp):
@@ -84,13 +103,13 @@ def get_grammar(tokens: spacy.tokens.doc.Doc) -> dict:
                                          (token.dep_).lower()]
 
     # Remove punctuation from the grammar
-    keys_to_remove = []
-    for key in grammar:
-        if 'punct' in grammar[key]:
-            keys_to_remove.append(key)
+    words_to_remove = []
+    for word in grammar:
+        if 'punct' in grammar[word]:
+            words_to_remove.append(word)
 
-    for key in keys_to_remove:
-        del grammar[key]
+    for word in words_to_remove:
+        del grammar[word]
 
     return grammar
 
@@ -112,37 +131,45 @@ def get_rule(syn_short: dict) -> dict:
 
 def write_to_file(rule: dict) -> None:
     """ Prints the policy rule to the policy file"""
-    policy_file = open("./policy.txt", "a")
+    policy_file = open("../policy.txt", "a")
     policy_file.write("\n" + str(rule))
     policy_file.close()
 
 
-def has_access_action(dictionary: dict) -> bool:
+def has_access_action(grammar: dict) -> bool:
     """
     Searches a dictionary of words to identify if it contains an access word.
     """
     has_access = False
-    for key in dictionary:
-        if 'root' in dictionary[key]:
-
-            access_words = [item.value for item in AccessWords]
-            for key2 in dictionary[key]:
-                if key2 in access_words:
-                    has_access = True
+    for word in grammar:
+        if 'root' in grammar[word]:
+            if is_access_word(word):
+                has_access = True
 
     return has_access
 
 
-def has_negation(dictionary: dict) -> bool:
+def is_access_word(word: str) -> bool:
+    has_access = False
+    access_words = [item.value for item in AccessWords]
+    if word in access_words:
+        has_access = True
+    return has_access
+
+
+def has_negation(grammar: dict) -> bool:
     """
     Searches a dictionary of words to identify if it contains a negating word.
     """
     negation_exists = False
-    for key in dictionary:
-        if 'neg' in dictionary[key]:
+    for word in grammar:
+        if is_negation_word(grammar[word]):
             negation_exists = True
-
     return negation_exists
+
+
+def is_negation_word(word: list) -> bool:
+    return 'neg' in word
 
 
 if __name__ == "__main__":
