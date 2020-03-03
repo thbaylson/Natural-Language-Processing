@@ -8,7 +8,8 @@ Run one test function in one test file:
 """
 
 import pytest
-import capstone as cp
+from src import capstone as cp
+
 
 @pytest.fixture
 def complex_input():

@@ -9,7 +9,7 @@ Run one test function in one test file:
 
 import pytest
 import spacy
-import capstone as cp
+from src import capstone as cp
 
 nlp = spacy.load("en_core_web_sm")
 
