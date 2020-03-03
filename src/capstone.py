@@ -112,7 +112,7 @@ def get_rule(syn_short: dict) -> dict:
 
 def write_to_file(rule: dict) -> None:
     """ Prints the policy rule to the policy file"""
-    policy_file = open("policy.txt", "a")
+    policy_file = open("./policy.txt", "a")
     policy_file.write("\n" + str(rule))
     policy_file.close()
 
@@ -123,7 +123,7 @@ def has_access_action(dictionary: dict) -> bool:
     """
     has_access = False
     for key in dictionary:
-        if ('root' in dictionary[key]):
+        if 'root' in dictionary[key]:
 
             access_words = [item.value for item in AccessWords]
             for key2 in dictionary[key]:

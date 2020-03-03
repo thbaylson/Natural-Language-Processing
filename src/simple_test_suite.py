@@ -77,7 +77,7 @@ def test_write_to_file(simple_input):
     1) We do not have functionality for generating the rule properly
     2) Our rule is defined using invalid unicode characters"""
     # Collect the current contents of the policy file
-    policy_file = open("policy.txt", "r")
+    policy_file = open("./policy.txt", "r")
     old_file_contents = policy_file.read()
     policy_file.close()
 
@@ -85,6 +85,6 @@ def test_write_to_file(simple_input):
     cp.write_to_file(simple_input[5])
 
     # Assert that the policy has been appended correctly
-    policy_file = open("policy.txt", "r")
+    policy_file = open("./policy.txt", "r")
     new_file_contents = policy_file.read()
     assert new_file_contents == (old_file_contents + "\n" + str(simple_input[5]))

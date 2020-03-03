@@ -69,7 +69,7 @@ def test_rule(complex_input):
 
 def test_write_to_file(complex_input):
     # Collect the current contents of the policy file
-    policy_file = open("policy.txt", "r")
+    policy_file = open("./policy.txt", "r")
     old_file_contents = policy_file.read()
     policy_file.close()
 
@@ -77,6 +77,6 @@ def test_write_to_file(complex_input):
     cp.write_to_file(complex_input[5])
 
     # Assert that the policy has been appended correctly
-    policy_file = open("policy.txt", "r")
+    policy_file = open("./policy.txt", "r")
     new_file_contents = policy_file.read()
     assert new_file_contents == (old_file_contents + "\n" + str(complex_input[5]))
