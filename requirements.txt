@@ -1,7 +1,7 @@
 # Base plugins
 attrs==19.3.0
 blis==0.4.1
-catalogue==1.0.0
+catalogue==2.0.0
 certifi==2019.11.28
 chardet==3.0.4
 cymem==2.0.3
@@ -20,7 +20,7 @@ pytest==5.4.1
 requests==2.23.0
 six==1.14.0
 spacy==2.2.4
-srsly==1.0.2
+srsly==2.0.1
 thinc==7.4.0
 tqdm==4.44.1
 urllib3==1.25.8
