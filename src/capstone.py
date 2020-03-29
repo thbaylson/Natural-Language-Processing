@@ -66,23 +66,27 @@ def process_input(inp: list) -> str:
 
 
 def print_grammar(grammar: dict) -> None:
-    output = "\n\nProcessed Info:" \
-             "\nWord\t\tPart of Speech\tNegation/Access\n"
+    print("Processed Info:")
+    print('{0:<12} {1:<16} {2:^10} {3:^8}'.format("Word", "Part of Speech",
+                                                "Negation", "Access"))
     word_index = 0
     part_of_speech_index = 1
 
+    col_width = 0
     for word in grammar:
-        # TODO: Formatting update to manage depending on character (3 works, 4 don't)
-        output += grammar[word][word_index] + "\t\t"
-        output += grammar[word][part_of_speech_index] + "\t\t"
+        if len(word) > col_width:
+            col_width = len(word)
+
+    for word in grammar:
+        word_str = grammar[word][word_index]
+        pos_str = grammar[word][part_of_speech_index]
+        neg = ""
+        acc = ""
         if is_negation_word(grammar[word]):
-            output += "\t-"
+            neg = "-"
         if is_access_word(word):
-            output += "\t*"
-        output += "\n"
-
-    print(output)
-
+            acc = "*"
+        print('{0:<12} {1:<16} {2:^10} {3:^8}'.format(word_str, pos_str, neg, acc))
 
 """
 def getTokens(inp):
