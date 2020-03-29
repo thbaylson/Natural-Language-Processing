@@ -42,7 +42,7 @@ def main(inp: list) -> None:
     rule = get_rule(syntax_short)
     print("\n[After getRule()]:", rule)
 
-    print("Access: ", has_access_action(syntax_short))
+    print("\nAccess: ", has_access_action(syntax_short))
     print("Negation: ", has_negation(syntax_short))
 
     print_grammar(grammar)
@@ -71,7 +71,7 @@ def print_grammar(grammar: dict) -> None:
         if len(word) > col_width:
             col_width = len(word) + 2
 
-    print("Processed Info:")
+    print("\nProcessed Info:")
     print('{0:<{width}} {1:<{width}} {2:^10} {3:^8}'.format("Word", "Part of Speech", "Negation",
                                                             "Access", width=col_width))
     word_index = 0
