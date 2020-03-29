@@ -66,12 +66,13 @@ def process_input(inp: list) -> str:
 
 
 def print_grammar(grammar: dict) -> None:
-    output = "\n\nProcessed Info:\nWord\t\tPart of " \
-             "Speech\tNegation/Access\n"
+    output = "\n\nProcessed Info:" \
+             "\nWord\t\tPart of Speech\tNegation/Access\n"
     word_index = 0
     part_of_speech_index = 1
 
     for word in grammar:
+        # TODO: Formatting update to manage depending on character (3 works, 4 don't)
         output += grammar[word][word_index] + "\t\t"
         output += grammar[word][part_of_speech_index] + "\t\t"
         if is_negation_word(grammar[word]):
