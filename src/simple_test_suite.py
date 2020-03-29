@@ -13,11 +13,12 @@ from src import capstone as cp
 
 nlp = spacy.load("en_core_web_sm")
 
+
 @pytest.fixture
 def simple_input():
-    inp =  'Bob can edit my documents'
+    inp = 'Bob can edit my documents'
     word_list = ['Bob', 'can', 'edit', 'my', 'documents']
-    
+
     # Heavily edited, needs review
     grammar_info = {
         'bob': ['propn', 'nsubj'],
@@ -26,7 +27,7 @@ def simple_input():
         'my': ['det', 'poss'],
         'documents': ['noun', 'dobj']
     }
-    
+
     # Around this point kick out unneccesary words
     syntax_info_long = {
         'bob': ['noun', 'subject'],
@@ -38,19 +39,21 @@ def simple_input():
     # t1 is a timestamp, this may not always be t1
     syntax_info_short = {
         't1': 0,
-        'bob': ['subject', '∃', 'accessing user'], 
+        'bob': ['subject', '∃', 'accessing user'],
         'edit': ['action', 'edit'],
-        'my': ['object', '∃', 'target user'], 
+        'my': ['object', '∃', 'target user'],
         'documents': ['object', '∀', 'target recourse']
     }
 
     # We want to keep the rule as one whole string because that's what's going into the policy file
     rule = '{(∃ user (name: Bob)), (action (name: edit)), (∀ target_resource (name: document), \
-        ∃ target_user (name: _myself)), (environment_conditions (time: >office hour, weekend))} - t1'
+        ∃ target_user (name: _myself)), (environment_conditions (time: >office hour, weekend))} - \
+        t1'
 
     return [inp, word_list, grammar_info, syntax_info_long, syntax_info_short, rule]
 
-#def test_tokens(simpleInput):
+
+# def test_tokens(simpleInput):
 #    assert cp.getTokens(simpleInput[0]) == simpleInput[1]
 
 # Parts of speech checker test ie: A sentence should have at least a subject, a verb, etc
@@ -63,14 +66,18 @@ def test_grammar(simple_input):
     tokens = nlp(simple_input[0])
     assert cp.get_grammar(tokens) == simple_input[2]
 
+
 def test_syntax_long(simple_input):
     assert cp.get_syntax_long(simple_input[2]) == simple_input[3]
+
 
 def test_syntax_short(simple_input):
     assert cp.get_syntax_short(simple_input[3]) == simple_input[4]
 
+
 def test_rule(simple_input):
     assert cp.get_rule(simple_input[4]) == simple_input[5]
+
 
 def test_write_to_file(simple_input):
     """ This test is currently failing because:

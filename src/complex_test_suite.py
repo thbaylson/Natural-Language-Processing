@@ -13,28 +13,28 @@ from src import capstone as cp
 
 @pytest.fixture
 def complex_input():
-    inp =  'only Bob is allowed to edit my documents after office hour and during the weekend'
-    word_list = ['only', 'Bob', 'is', 'allowed', 'to', 'edit', 'my', 'documents', 'after', 'office', 
-        'hour', 'and', 'during', 'the', 'weekend']
-    
-    grammar_info = [ 
-        ['only', ['preposition', 'adjective']], 
-        ['Bob', ['noun', 'subject']], 
-        ['is', ['verb', 'to be']], 
-        ['allowed', ['verb', 'main']], 
-        ['to', ['preposition']], 
+    inp = 'only Bob is allowed to edit my documents after office hour and during the weekend'
+    word_list = ['only', 'Bob', 'is', 'allowed', 'to', 'edit', 'my', 'documents', 'after', 'office',
+                 'hour', 'and', 'during', 'the', 'weekend']
+
+    grammar_info = [
+        ['only', ['preposition', 'adjective']],
+        ['Bob', ['noun', 'subject']],
+        ['is', ['verb', 'to be']],
+        ['allowed', ['verb', 'main']],
+        ['to', ['preposition']],
         ['edit', ['verb']],
-        ['my', ['adjective', 'possessive']], 
-        ['documents', ['noun', 'plural']], 
-        ['after', ['preposition', 'adjective']], 
-        ['office', ['adverb']], 
-        ['hour', ['noun', 'singular']], 
+        ['my', ['adjective', 'possessive']],
+        ['documents', ['noun', 'plural']],
+        ['after', ['preposition', 'adjective']],
+        ['office', ['adverb']],
+        ['hour', ['noun', 'singular']],
         ['and', ['conjunction']],
-        ['during', ['preposition']], 
-        ['the', ['determiner']], 
+        ['during', ['preposition']],
+        ['the', ['determiner']],
         ['weekend', ['adverb']]
-        ]
-    
+    ]
+
     syntax_info_long = '((<only, (preposition, adjective, -)>, <Bob, (noun, subject, -)>, \
         <is allowed to edit, (verb, main, -)>, (<my, (adjective,possessive, -)>, \
         <documents, (noun, plural, -)>, <after, (preposition, adjective, -)>, \
@@ -48,24 +48,30 @@ def complex_input():
         < (time: office hour+, weekend)>)'
 
     rule = '{(∃ user (name: Bob)), (action (name: edit)), (∀ target_resource (name: document), \
-        ∃ target_user (name: _myself)), (environment_conditions (time: >office hour, weekend))} - t1'
+        ∃ target_user (name: _myself)), (environment_conditions (time: >office hour, weekend))} - \
+        t1'
 
     return [inp, word_list, grammar_info, syntax_info_long, syntax_info_short, rule]
 
-#def test_tokens(complexInput):
+
+# def test_tokens(complexInput):
 #    assert cp.getTokens(complexInput[0]) == complexInput[1]
 
 def test_grammar(complex_input):
     assert cp.get_grammar(complex_input[0]) == complex_input[2]
 
+
 def test_syntax_long(complex_input):
     assert cp.get_syntax_long(complex_input[2]) == complex_input[3]
+
 
 def test_syntax_short(complex_input):
     assert cp.get_syntax_short(complex_input[3]) == complex_input[4]
 
+
 def test_rule(complex_input):
     assert cp.get_rule(complex_input[4]) == complex_input[5]
+
 
 def test_write_to_file(complex_input):
     # Collect the current contents of the policy file

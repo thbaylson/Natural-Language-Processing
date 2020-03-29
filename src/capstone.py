@@ -1,9 +1,8 @@
-import os.path
 import re
-import spacy
 import sys
-
 from enum import Enum
+
+import spacy
 
 
 class AccessWords(Enum):
@@ -66,7 +65,7 @@ def process_input(inp: list) -> str:
     return str(inp)
 
 
-def print_grammar(grammar:dict) -> dict:
+def print_grammar(grammar: dict) -> None:
     output = "\n\nProcessed Info:\nWord\t\tPart of " \
              "Speech\tNegation/Access\n"
     word_index = 0
@@ -83,6 +82,7 @@ def print_grammar(grammar:dict) -> dict:
 
     print(output)
 
+
 """
 def getTokens(inp):
     Placeholder function to help set up PyTest
@@ -91,16 +91,17 @@ def getTokens(inp):
 """
 
 
-def get_grammar(tokens: spacy.tokens.doc.Doc) -> dict:
+def get_grammar(tokens: list) -> dict:
     """ Placeholder function to help set up PyTest"""
     # SpaCy can find tokens and parts of speech at the same time
     grammar = {}
 
-    # Creates a dictionary with keys being the input words and their values being that input word's P.O.S.
+    # Creates a dictionary with keys being the input words and their values being that input
+    # word's P.O.S.
     for token in tokens:
-        grammar[(token.text).lower()] = [(token.lemma_).lower(),
-                                         (token.pos_).lower(),
-                                         (token.dep_).lower()]
+        grammar[token.text.lower()] = [token.lemma_.lower(),
+                                       token.pos_.lower(),
+                                       token.dep_.lower()]
 
     # Remove punctuation from the grammar
     words_to_remove = []
