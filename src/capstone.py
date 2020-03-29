@@ -72,9 +72,8 @@ def print_grammar(grammar: dict) -> None:
             col_width = len(word) + 2
 
     print("Processed Info:")
-    print('{0:<{col_width}} {1:<{col_width}} {2:^10} {3:^8}'.format("Word", "Part of Speech",
-                                                                    "Negation", "Access",
-                                                                    col_width=col_width))
+    print('{0:<{width}} {1:<{width}} {2:^10} {3:^8}'.format("Word", "Part of Speech", "Negation",
+                                                            "Access", width=col_width))
     word_index = 0
     part_of_speech_index = 1
 
@@ -87,8 +86,8 @@ def print_grammar(grammar: dict) -> None:
             neg = "-"
         if is_access_word(word):
             acc = "*"
-        print('{0:<{col_width}} {1:<{col_width}} {2:^10} {3:^8}'.format(word_str, pos_str, neg,
-                                                                        acc, col_width=col_width))
+        print('{0:<{width}} {1:<{width}} {2:^10} {3:^8}'.format(word_str, pos_str, neg, acc,
+                                                                width=col_width))
 
 """
 def getTokens(inp):
