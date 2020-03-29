@@ -1,0 +1,10 @@
+Rule1 {(X user (name: Bob)), (action (name: edit)), (X target_resource (name: document)), (X target_user (name: Alice))}
+Rule2 {(X user (name: Alison)), (action (name: read)), (X target_resource (name: document)), (X target_user (name: Alice))}
+Rule3 {(X user (name: Tom)), (action (name: edit)), (X target_resource (name: document)), (X target_user (name: Alice))}
+Rule4 {(X user (name: Tim)), (action (name: edit)), (X target_resource (name: document)), (X target_user (name: Alice))}
+Rule5 {(X user (name: Mandy)), (action (name: read)), (X target_resource (name: document)), (X target_user (name: Alice))}
+Rule6 {(X user (name: Bob)), (action (name: edit)), (X target_resource (name: document)), (X target_user (name: Alice))}
+Rule7 {(X user (name: Alison)), (action (name: read)), (X target_resource (name: document)), (X target_user (name: Alice))}
+Rule8 {(X user (name: Tom)), (action (name: edit)), (X target_resource (name: document)), (X target_user (name: Alice))}
+Rule9 {(X user (name: Tim)), (action (name: edit)), (X target_resource (name: document)), (X target_user (name: Alice))}
+Rule10 {(Y user (name: Mandy)), (action (name: read)), (Y target_resource (name: document)), (Y target_user (name: Alice))}
