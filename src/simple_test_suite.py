@@ -9,7 +9,7 @@ Run one test function in one test file:
 
 import pytest
 import spacy
-from src import capstone as cp
+import capstone as cp
 
 nlp = spacy.load("en_core_web_sm")
 
@@ -46,9 +46,9 @@ def simple_input():
     }
 
     # We want to keep the rule as one whole string because that's what's going into the policy file
-    rule = '{(∃ user (name: Bob)), (action (name: edit)), (∀ target_resource (name: document), \
-        ∃ target_user (name: _myself)), (environment_conditions (time: >office hour, weekend))} - \
-        t1'
+    # This rule is modeled after Dr. Kate Morovat's policy file
+    rule = 'Rule1 {(X user (name: Bob)), (action (name: edit)), (X target_resource (name: document)), (X target_user (name: Alice))}'
+
 
     return [inp, word_list, grammar_info, syntax_info_long, syntax_info_short, rule]
 

@@ -104,8 +104,7 @@ def get_grammar(tokens: list) -> dict:
     # Creates a dictionary with keys being the input words and their values being that input
     # word's P.O.S.
     for token in tokens:
-        grammar[token.text.lower()] = [token.lemma_.lower(),
-                                       token.pos_.lower(),
+        grammar[token.text.lower()] = [token.pos_.lower(),
                                        token.dep_.lower()]
 
     # Remove punctuation from the grammar
@@ -137,7 +136,7 @@ def get_rule(syn_short: dict) -> dict:
 
 def write_to_file(rule: dict) -> None:
     """ Prints the policy rule to the policy file"""
-    policy_file = open("../policy.txt", "a")
+    policy_file = open("./policy.txt", "a")
     policy_file.write("\n" + str(rule))
     policy_file.close()
 
