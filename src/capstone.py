@@ -67,26 +67,33 @@ def process_input(inp: list) -> str:
 
 def print_grammar(grammar: dict) -> None:
     col_width = 0
+    col_name_word = "Word"
+    col_name_pos = "Part of Speech"
+    col_name_neg = "Negation"
+    col_name_acc = "Access"
+
+    # If the longest word is greater than our longest col header name
     for word in grammar:
-        if len(word) > col_width:
+        if len(word) > len(col_name_pos):
             col_width = len(word) + 2
+        else:
+            col_width = len(col_name_pos) + 2
 
     print("\nProcessed Info:")
-    print('{0:<{width}} {1:<{width}} {2:^10} {3:^8}'.format("Word", "Part of Speech", "Negation",
-                                                            "Access", width=col_width))
-    word_index = 0
-    part_of_speech_index = 1
+    print('{0:<{width}} {1:<{width}} {2:^10} {3:^8}'.format(col_name_word, col_name_pos,
+                                                            col_name_neg, col_name_acc,
+                                                            width=col_width))
 
+    pos_index = 1
     for word in grammar:
-        word_str = grammar[word][word_index]
-        pos_str = grammar[word][part_of_speech_index]
+        pos_str = grammar[word][pos_index]
         neg = ""
         acc = ""
         if is_negation_word(grammar[word]):
             neg = "-"
         if is_access_word(word):
             acc = "*"
-        print('{0:<{width}} {1:<{width}} {2:^10} {3:^8}'.format(word_str, pos_str, neg, acc,
+        print('{0:<{width}} {1:<{width}} {2:^10} {3:^8}'.format(word, pos_str, neg, acc,
                                                                 width=col_width))
 
 """
