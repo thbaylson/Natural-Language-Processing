@@ -49,6 +49,11 @@ def main(inp: list) -> None:
 
     write_to_file(rule)
 
+    doc = nlp("Next week I'll touch system.doc")
+    for ent in doc.ents:
+        print(ent.text, ent.label_)
+
+
 
 def process_input(inp: list) -> str:
     """ 

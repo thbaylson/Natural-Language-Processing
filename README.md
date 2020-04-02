@@ -10,6 +10,21 @@ From root directory:
 ## Example Command
 `$ python3 capstone "Full sentence to be parsed"`
 
+# Policy file formatting
+Given sentence `Bob can edit my document.`, the output to the policy file will be:
+
+```
+Rule1 {(X user (name: Bob)), (action (name: edit)), (X target_resource (name: document
+)), (X target_user (name: my))}
+```
+
+```
+X user(name: userName)
+action(name: action)
+X target_resource (name: targetFile)
+X target_user: (name: fileOwner)
+```
+
 # Git Branching Workflow
 * Create feature branch
 * Complete work
