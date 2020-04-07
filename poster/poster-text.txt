@@ -1,23 +1,24 @@
-% What is the problem? \\
-A benefit of file systems, whether locally housed or “in the cloud”, is the increased work efficiency from users sharing the same resources. But given the growing desire for companies to give their employees this level of efficient access to data, that data is at risk anytime security isn’t easy to establish for its users. And, in the worst cases, where something like a credential file may itself be accessed by a user who should not have access, a security failure cascade may be initiated that could lead to very serious problems for the company and its users.
+= The Basics = 
+Files exist in filesystems, which can be scaled for a userbase from one to thousands of users.
 
-% Why is it important? \\
-Given this, it is extremely important that users can easily and efficiently control access to their data, starting from simple and straightforward privacy purposes all the way to fully customized schedules of access to highly confidential data.
+On the many-users on one-system end of the scale, there's increased work efficiency from users sharing the same resources. 
 
-% How do you plan to solve it? \\
+= Problem Definition = 
+But given the growing desire for companies to give their employees this level of efficient access to data, that data is at risk anytime security isn’t easy to establish for its users.
+
+While typical access for a given file may be legitimate, when the owner of data does not adjust or monitor access, it’s easy for security requirements to relax. The data goes either unsecured or unmonitored.
+
+Given this, it is extremely important that users can easily and efficiently control access to their data.
+
+= Solution Basics =
 In order to meet this goal, easy and effective means to protect information and resources must be made available to those responsible for its security. 
-Being that natural language is the most natural way to input a command, we propose a program which allows for natural input that will both implement policies to build secure access and receive inquiries to grant or deny access to the inquirer.
+Being that natural language is the most direct way to input a command, we propose a program which allows for natural input that will both implement policies to build secure access and receive inquiries to grant or deny access to the inquirer.
 
-Our system will use a well-formed notation (described below) for both specifying access control policies and authorizing access when inquiries against data are made. In this way, the definition of policies becomes simpler and more efficient, which will allow users to protect their assets under their own terms, and will ensure that requesters can feed access requests to the system just as simply.
+It will accept everything from simple and straightforward privacy statements to fully customized schedules of access to highly confidential data.
 
-\section{Problem Definition}
-% Briefly describe the data that you used (or plan to use).\\ 
-All types of data in a file system are at risk when access is not defined or if that access is defined in an unclear or incomplete manner. Our system will take user input and determine the intent of a given security policy or access inquiry for the extant data on a network or filesystem which implements our access control methods.
+= Data Description =
+All types of data in a file system are at risk when access is not clearly defined. Our system will take user input and determine the intent of a given security policy or access inquiry for the extant data on a network or filesystem which implements our access control methods.
 
-% What do people usually try to do with the data? \\
-While typical access for a given file may be legitimate, when the owner of data is not able to (or aware of how to) adjust or monitor access (especially given the complexity of certain team-based file access), it’s easy for security requirements to relax. The data goes either unsecured or unmonitored, increasing unnecessary risk.
-
-% Why is it difficult to do what they want to do? \\
 A given network with subjects, objects, and defined relationships can be interpreted as a directed labeled graph (vertices connected by edges)
 \begin{enumerate}
     \item $N$ is a finite set of subjects $(S)$ and objects $(O)$, that may include an environmental condition.
@@ -26,24 +27,18 @@ A given network with subjects, objects, and defined relationships can be interpr
     \item $E \subseteq N \times N \times \Sigma \times W$ represents the edges of existing connections, the relationships between subjects and objects, objects and other objects, and represents a general overview of the possible authorized interactions within that network\cite{morovat16}.
 \end{enumerate}
 
-% What specific data did you use (or plan to use)? What is the source? \\
-Though programs can be written for security management, they would simply be another step in the chain that would require attention, setup, and maintenance. Much research has been performed, some of which is cited within this proposal, but no specific approach has proven quite flexible enough for general use within social networks.
+= Solution Specifics =
+Our system will use a well-formed notation for both specifying access control policies and authorizing access when inquiries against data are made. In this way, the definition of policies becomes simpler and more efficient, which will allow users to protect their assets under their own terms, and will ensure that requesters can feed access requests to the system just as simply.
 
-% What are the specific user requirements? \\
-Our system must process natural user command sentences in a given structure within a basic UI, resulting in appending well-formatted data to a policy file in the user's directory. This will require a simple UI for access control input, which could easily be presented within an intranet-based web-application or desktop application. It will be flexible and responsive, as companies may wish to have more granular control over its presentation. In the event of an error in input or authorization attempt, depending on certain circumstances, the program may ask for further clarification. A program already exists which will manage reading the policy rules and acting on user queries, and it also handles conflicts, giving priority to most recent policy input.
-
-% List a company and organization that may use the features of this program. \\
-We consider that this program will be useful for companies that emphasize team-based access to shared files, especially where leadership is comprised of users for whom it is not time-efficient to learn the details of things like `chmod` commands. Even Western Carolina University would benefit from implementing this approach, and it goes without saying that more general social networks such as Facebook might benefit from users who would like to take a more involved stance on how their posted files are seen by other users.
-
-\section{Solution}
-
-% Why do you plan on using the solution that you chose? \\
-Our solution stands as a faithful implementation of Dr. Morovat's own Policy Based Language for Access Control \cite{morovat16}. It will simultaneously respect the complexities of a network with subjects, objects, and environmental availability conditions while also achieving a simpler result. The Policy-Based Attribute Access Control model will allow its users to use a natural language to communicate policies, empowering authorized users to take control of their data and reduces risk using natural language requests such as “Bob can edit my tasklist documents on weekdays” and "only I can edit my tasklist documents after 1pm Friday".
+Our solution stands as a faithful implementation of Dr. Morovat's own Policy Based Language for Access Control \cite{morovat16}. It will simultaneously respect the complexities of a network with subjects, objects, and environmental availability conditions while also achieving a simpler result. The Policy-Based Attribute Access Control model will allow its users to use a natural language to communicate policies, empowering authorized users to take control of their data and reduces risk using natural language requests such as “Bob can edit my tasklist documents on weekdays” and "only I can edit my tasklist documents after 1pm on Fridays".
 
 Users will define policies and make inquiries in English via an access control interface. The program will transform user defined policies, using the well-formed format described below, into system rules. It will also transform user inquiries into the well-formed format and process these as system queries.
+Given sentences will be in the format: Subject verb object [conditional(time/date)]. As an example, "Bob cannot update project-tasks.docx on weekends."
 
-% Describe your proposed solution thoroughly. Include a data flow diagram, interaction-flow diagram, and MoSCoW analysis. \\
-Given sentences will be in the format: Subject verb object [conditional(time/date)]. As an example, "Alice is allowed to access photos."
+= End User Experience =
+Our system must process natural user command sentences in a given structure within a basic UI, resulting in appending well-formatted data to a policy file in the user's directory. This will require a simple UI for access control input, which could easily be presented within an intranet-based web-application or desktop application. It will be flexible and responsive, as companies may wish to have more granular control over its presentation. In the event of conflict or necessary clarification for an input or authorization attempt, the program will allow for resolution accordingly.
+
+= Functional Info =
 The system will recognize 'Access' words like "Read", "write", and "modify", including common negations. Objects themselves may be referenced by filetype (i.e. "photos" = jpg, gif, etc, and "documents" = txt, docx, etc.). It will differentiate between types of entities in a given network as modeled above:
 \begin{itemize}
     \item Target users, which get policies protecting them from unauthorized access
@@ -60,7 +55,8 @@ The well-formed format template we will use indicates the following:
     \item Words in rule/request appear with order: subject, action, object
 \end{itemize}
 
-The system itself will operate on, at the very least, a simple UI which may be used as a framework for accessing resources in various file system configurations and social networks. Please refer to Table \ref{table:1} for our MoSCoW table of further feature considerations.
-
-% Describe and show a storyboard that illustrates how your system will be used. \\
+= Flowchart Description =
 Users will start our program via command line or graphical application. They may then type access control commands into the program. These commands may be written as natural-sounding sentences. The program will then parse the sentence into individual words. These individual words will be used with WordNet’s lexical database to ascertain their grammatical and syntactical significance. The program will use the grammatical and syntactical data to generate a well-formed policy rule for access control based on the original natural-sounding sentence. The newly generated policy will be cross examined with an existing policy text file to ensure the same policy does not already exist. If the newly generated policy does not exist in the policy text file, it will be appended to the policy text file. Dr. Morovat’s own program handles the security activities as determined by the policy rule or inquiry.
+
+= Future =
+We consider that this program will be useful for companies that emphasize team-based access to shared files, especially where leadership is comprised of users for whom it is not time-efficient to learn the details of things like `chmod` commands. Even Western Carolina University would benefit from implementing this approach, and it goes without saying that more general social networks such as Facebook might benefit from allowing users to take a more involved stance on how their data is seen by other users.
