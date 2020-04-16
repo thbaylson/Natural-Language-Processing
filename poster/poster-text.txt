@@ -1,17 +1,19 @@
 = The Basics = 
-Files exist in filesystems, which can be scaled for a userbase from one to thousands of users.
+Filesystems can be scaled for a userbase from one to thousands of users.
 
-There's increased work efficiency from users sharing the same resources on a many-users-to-one-system relationship. 
+Efficiency of work is often greatly increased by having users access the same files within these systems.
 
 = Problem Definition = 
-While typical access for a given file may be legitimate, when the owner of data does not adjust or monitor access, it’s easy for security requirements to relax, leaving companies at risk.
+While typical access in these systems is legitimate, if security requirements relax, the whole company can be left at risk.
 
 Easy and effective means to protect information and resources must be made available to those responsible for its security. 
 
 = Solution Basics =
-Being that natural language is the most direct way to input a command, we propose a program which allows for natural input that will both implement policies to build secure access and receive inquiries to grant or deny access to the inquirer.
+Natural language is the most direct way to input a command, and our program allows for natural input that may perform two tasks:
+1. Implement policies to build secure access
+2. Receive inquiries to grant or deny access to the 
 
-It will accept everything from simple privacy statements to fully customized schedules of access to highly confidential data.
+This system will be able to handle everything from simple "user can access filename" statements to fully customized schedules of access based on filetype and environmental time.
 
 = Data Description =
 A given network with subjects, objects, and defined relationships can be interpreted as a directed labeled graph (vertices connected by edges)
@@ -23,36 +25,22 @@ A given network with subjects, objects, and defined relationships can be interpr
     \item $E \subseteq N \times N \times \Sigma \times W$ represents the edges of existing connections, the relationships between subjects and objects, objects and other objects, and represents a general overview of the possible authorized interactions within that network\cite{morovat16}.
 \end{enumerate}
 
-All types of data in a file system are at risk when access is not clearly defined. Our system will allow for clear and direct definitions of security policies or access inquiries.
-
 = Solution Specifics =
-Our system will use a well-formed notation for both specifying access control policies and authorizing access when inquiries against data are made. 
+Our solution stands as a faithful implementation of Dr. Morovat's own Policy Based Language for Access Control \cite{morovat16}, implementing a "well-formed notation" for specifying access control policies and access authorization requests.
 [TODO: Graphical example of well-formed notation]
 
-Our solution stands as a faithful implementation of Dr. Morovat's own Policy Based Language for Access Control \cite{morovat16}. 
+Users will define policies and make inquiries in English via an access control interface. 
+It first recognizes usernames and target resources.
+Then it checks against 'Access' words like "Read", "write", and "modify", including common negations. 
+Objects themselves may be referenced by specific filename, general file description, or even referenced by filetype.
 
-Users will define policies and make inquiries in English via an access control interface. It will recognize user names, target resources, 'Access' words like "Read", "write", and "modify", including common negations. Objects themselves may be referenced by filetype (i.e. "photos" = jpg, gif, etc, and "documents" = txt, docx, etc.).
+Given sentences will be in the format: 
 
-Our program will then transform these inputs, using the well-formed format described below, into system rules and access queries.
-Given sentences will be in the format: Subject verb object [conditional(time/date)]. 
+Subject verb object [conditional(time/date)]. 
 [Graphical example of change: "Bob cannot update project-tasks.docx on weekends."]
-\begin{itemize}
-    \item Target users, which get policies protecting them from unauthorized access
-    \item Target resources, which get policies protecting them from unmanaged actions
-\end{itemize}
-It will group inquiries into two groups:
-\begin{itemize}
-    \item Attempting to perform an operation against resources like updating or deleting resource
-    \item Attempting to access target users (e.g. Facebook may consider this in terms of 'tagging' in a photo or 'poking' a target user)
-\end{itemize}
-The well-formed format template we will use indicates the following:
-\begin{itemize}
-    \item Words in policy/ inquiry appear with order: subject, verb, object
-    \item Words in rule/request appear with order: subject, action, object
-\end{itemize}
-
-= End User Experience =
-Our UI is simple, but flexible, allowing it to be presented within an intranet-based web-application or localized desktop application as companies may wish to have more granular control over its presentation. 
 
 = Flowchart Description =
 [TODO: A flowchart: user input, breaking up for user/resource recognition, parsing for grammar, access, negation, and output to well-formed format]
+
+= End User Experience =
+Our UI is simple, but flexible, allowing it to be presented within an intranet-based web-application or localized desktop application as companies may wish to have more granular control over its presentation. 
