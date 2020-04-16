@@ -1,5 +1,6 @@
 import re
 import sys
+import os
 from enum import Enum
 
 import spacy
@@ -21,6 +22,15 @@ class AccessWords(Enum):
 def main(inp: list) -> None:
     nlp = spacy.load("en_core_web_sm")
 
+    # Get local file and folder information
+    # TODO: local dir should be updated to use the running user's homedir, when implementing
+    local_dir = '../'
+    # TODO: Clean up this section
+    local_files = [file.path.split('/')[-1] for file in os.scandir(local_dir) if file.is_file()]
+    local_folders = [folder.path.split('/')[-1] for folder in os.scandir(local_dir) if
+                     folder.is_dir()]
+    local_exts = [file.split('.')[-1] for file in local_files]
+
     processed_input = process_input(inp)
     print("[After processInput()]:", processed_input)
 
@@ -32,6 +42,10 @@ def main(inp: list) -> None:
 
     grammar = get_grammar(tokens)
     print("\n[After getGrammar()]:", grammar)
+
+    # Scan for target_resource
+    target = get_target_resource(grammar, local_files, local_folders, local_exts)
+    print(target)
 
     syntax_long = get_syntax_long(grammar)
     print("\n[After getSyntaxLong()]:", syntax_long)
@@ -47,27 +61,67 @@ def main(inp: list) -> None:
 
     print_grammar(grammar)
 
+    # TODO: Include target as param, write_to_file handles policy printing
     write_to_file(rule)
-
-    doc = nlp("Next week I'll touch system.doc")
-    for ent in doc.ents:
-        print(ent.text, ent.label_)
-
 
 
 def process_input(inp: list) -> str:
     """ 
     Recieve command line input, search for errors, and split the input on
     word boundaries.
+
     TODO: Write usage notes into README
     """
-
     # Match the first command line argument independent of OS
     match_object = re.search('capstone.py', '.\\capstone.py')
     if match_object is not None:
         # Trims off the command line file call
         inp = inp[1:]
     return str(inp)
+
+
+def get_target_resource(inp: dict, files: list, folders: list, exts: list) -> dict:
+    """
+    If a specific file referenced, search locally for the file, confirm it exists, and append:
+    (X target_resource (name: document))
+
+    If a specific folder referenced, search locally for the folder, confirm it exists, and append:
+    (X target_resource (case: folder))
+
+    If no specific file or folder, but items of that type exist in directory, append:
+    (X target_resource (case: filetype))
+
+    TODO: Clean up this function
+    TODO: Will need to test this against things like bob.docx, etc.
+    """
+    target = ""
+    target_type = ""
+    resource_found = False
+    resource_data = {}
+
+    # Search specific reference and specific folders
+    for word in inp:
+        if word in files:
+            target = word
+            target_type = "file"
+            resource_found = True
+    if not resource_found:
+        # Search specific folders
+        for word in inp:
+            if word in folders:
+                target = word
+                target_type = "case"
+                resource_found = True
+    if not resource_found:
+        # Search filetype reference
+        for word in inp:
+            if word in exts:
+                target = word
+                target_type = "case"
+
+    # Make correct info appendable
+    resource_data[target] = target_type
+    return resource_data
 
 
 def print_grammar(grammar: dict) -> None:
