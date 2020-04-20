@@ -74,6 +74,7 @@ fabric.properties
 
 # Policy files
 policy.txt
+old_policy.txt
 
 # Proposal Build Data
 proposal/proposal.aux
