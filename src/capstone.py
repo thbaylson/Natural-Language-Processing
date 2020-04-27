@@ -4,9 +4,10 @@ import os
 from enum import Enum
 
 import spacy
-from spacy import displacy #TODO: Remove later
-from pathlib import Path #TODO: Remove later
 
+# Uncomment to allow for word association graphing
+# from spacy import displacy
+# from pathlib import Path
 
 class AccessWords(Enum):
     access =        ["access",      "edit"]
@@ -17,6 +18,7 @@ class AccessWords(Enum):
     manipulate =    ["manipulate",  "edit"]
     modify =        ["modify",      "edit"]
     read =          ["read",        "read"]
+    see =           ["see",         "read"]
     update =        ["update",      "edit"]
     use =           ["use",         "edit"]
     view =          ["view",        "read"]
@@ -24,29 +26,23 @@ class AccessWords(Enum):
 
 
 def main(inp: list) -> None:
+    # Load core reference
     nlp = spacy.load("en_core_web_sm")
 
     # Get local file and folder information
-    # TODO: local dir should be updated to use the running user's homedir, when implementing
     local_dir = '../'
-    # TODO: Clean up this section
     local_files = [file.path.split('/')[-1] for file in os.scandir(local_dir) if file.is_file()]
     local_folders = [folder.path.split('/')[-1] for folder in os.scandir(local_dir) if
                      folder.is_dir()]
     local_exts = [file.split('.')[-1] for file in local_files]
 
+    # Process input
     processed_input = process_input(inp)
-    #print("[After processInput()]:", processed_input)
-
-    # tokens = getTokens(processedInput)
-    # print("\nMain [After getTokens()]:", tokens)
 
     # The call nlp() uses the default model. To speed things up, we may want to define our own model
     tokens = nlp(processed_input)
-    #print("\n[Tokens]: ", tokens)
 
-    
-    #TODO: This makes an svg image showing word associations. Remove this?
+    # Uncomment to allow for output of graph
     """
     tokens = nlp("Bob can edit Alice's documents")
     svg = displacy.render(tokens, style="dep", jupyter=False)
@@ -54,29 +50,19 @@ def main(inp: list) -> None:
     output_path = Path(file_name)
     output_path.open("w", encoding="utf-8").write(svg)
     """
-    
 
+    # Build the grammar
     grammar = get_grammar(tokens)
-    print("\n[After getGrammar()]:", grammar)
 
     # Scan for target_resource
     target = get_target_resource(grammar, local_files, local_folders, local_exts)
-    #print("Target: " + str(target))
 
-    #syntax_long = get_syntax_long(grammar)
-    #print("\n[After getSyntaxLong()]:", syntax_long)
+    # Print out column display to demonstrate processing
+    print_column_display(grammar)
 
-    #syntax_short = get_syntax_short(syntax_long)
-    #print("\n[After getSyntaxShort()]:", syntax_short)
-
+    # Generate rule and write to file
     rule = get_rule(grammar, target)
-    #print("\n[After getRule()]:\n\t", rule)
-
-    #print("\nAccess: ", get_access_action(syntax_short))
-    #print("Negation: ", has_negation(syntax_short))
-
-    #print_grammar(grammar)
-
+    print(rule)
     write_to_file(rule)
 
 
@@ -84,8 +70,6 @@ def process_input(inp: list) -> str:
     """ 
     Recieve command line input, search for errors, and split the input on
     word boundaries.
-
-    TODO: Write usage notes into README
     """
     # Match the first command line argument independent of OS
     match_object = re.search('capstone.py', '.\\capstone.py')
@@ -105,9 +89,6 @@ def get_target_resource(inp: dict, files: list, folders: list, exts: list) -> di
 
     If no specific file or folder, but items of that type exist in directory, append:
     (X target_resource (case: filetype))
-
-    TODO: Clean up this function
-    TODO: Will need to test this against things like bob.docx, etc.
     """
     target = ""
     target_type = ""
@@ -139,7 +120,10 @@ def get_target_resource(inp: dict, files: list, folders: list, exts: list) -> di
     return resource_data
 
 
-def print_grammar(grammar: dict) -> None:
+def print_column_display(grammar: dict) -> None:
+    """
+    Prints a human readable column display of the input policy or query
+    """
     col_width = 0
     col_name_word = "Word"
     col_name_pos = "Part of Speech"
@@ -153,11 +137,12 @@ def print_grammar(grammar: dict) -> None:
         else:
             col_width = len(col_name_pos) + 2
 
+    # Building the columns
     print("\nProcessed Info:")
     print('{0:<{width}} {1:<{width}} {2:^10} {3:^8}'.format(col_name_word, col_name_pos,
                                                             col_name_neg, col_name_acc,
                                                             width=col_width))
-
+    # Fill out the columns
     pos_index = 1
     for word in grammar:
         pos_str = grammar[word][pos_index]
@@ -183,12 +168,13 @@ def get_grammar(tokens: list) -> dict:
                                        token.dep_.lower(),
                                        token.lemma_.lower()]
 
-    # Remove punctuation from the grammar
+    # Find punctuation in the grammar
     words_to_remove = []
     for word in grammar:
         if 'punct' in grammar[word]:
             words_to_remove.append(word)
 
+    # Remove punctuation in the grammar
     for word in words_to_remove:
         del grammar[word]
 
@@ -205,7 +191,7 @@ def get_syntax_short(syn_long: dict) -> dict:
     return syn_long
 
 
-def get_rule(syn_short: dict, target_res: dict) -> dict:
+def get_rule(syn_short: dict, target_res: dict) -> str:
     """
     Placeholder function to help set up PyTest
     resource_data[target] = target_type, where target_type is either case or name
@@ -246,7 +232,7 @@ def write_to_file(rule: str) -> None:
 
             # We need to decode() the readline() bc we opened the file in binary mode.
             last_line = policy_file.readline().decode()
-    
+
             # Here we separate the last line into the 'Rule#' part and the policy-rule part.
             last_line_array = last_line.split(' ')
 
@@ -312,6 +298,9 @@ def get_affected_user(grammar: dict) -> str:
 
 
 def is_access_word(word: str) -> bool:
+    """
+    Identifies whether a word is an access word
+    """
     has_access = False
     access_words = [item.value[0] for item in AccessWords]
     if word in access_words:
@@ -332,6 +321,9 @@ def has_negation(grammar: dict) -> bool:
 
 
 def is_negation_word(word: list) -> bool:
+    """
+    Identifies whether a word is a negation
+    """
     return 'neg' in word
 
 
