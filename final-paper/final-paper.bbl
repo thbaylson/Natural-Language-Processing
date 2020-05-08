@@ -1,0 +1,31 @@
+\begin{thebibliography}{1}
+
+\bibitem{morovat16}
+Katanosh Morovat and Brajendra Panda.
+\newblock Policy language for access control in social network cloud.
+\newblock {\em 2016 IEEE International Conference on Smart Cloud (SmartCloud)},
+  pages 313--318, 2016.
+
+\bibitem{fong11}
+Philip Fong and Ida Siahaan.
+\newblock Relationship-based access control policies and their policy
+  languages.
+\newblock In {\em SACMAT ’11: Proceedings of the 16th ACM Symposium on Access
+  Control Models and Technologies}, pages 51--60, New York, NY, USA, 01 2011.
+  Association for Computing Machinery.
+
+\bibitem{aktoudianakis13}
+Evangelos Aktoudianakis, Jason Crampton, Steve~A. Schneider, Helen Treharne,
+  and Adrian Waller.
+\newblock Policy templates for relationship-based access control.
+\newblock {\em 2013 Eleventh Annual Conference on Privacy, Security and Trust},
+  pages 221--228, 2013.
+
+\bibitem{damiani02}
+Ernesto Damiani, Sabrina De~Capitani~di Vimercati, Stefano Paraboschi, and
+  Pierangela Samarati.
+\newblock A fine-grained access control system for xml documents.
+\newblock {\em In ACM Transactions on Information and System Security
+  (TISSEC)}, 5(2):169–202, 2002.
+
+\end{thebibliography}
