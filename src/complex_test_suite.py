@@ -8,7 +8,7 @@ Run one test function in one test file:
 """
 
 import pytest
-from src import capstone as cp
+from src import controller as cp
 
 
 @pytest.fixture
