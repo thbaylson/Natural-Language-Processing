@@ -2,6 +2,8 @@
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
 .idea/
+.vscode/
+.env/
 
 # User-specific stuff
 .idea/**/workspace.xml
@@ -84,7 +86,7 @@ old_policy.txt
 *.fls
 *.log
 *.synctex.gz
+
+# Python files
 __pycache__/
-.env/
-.vscode/
 /venv/
