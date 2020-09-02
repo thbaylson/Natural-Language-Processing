@@ -42,7 +42,7 @@
 \date{Fall, 2020}
 \maketitle
 
-% TODO: Annotate all figures with captions
+% TODO: Update each paragraph to reference refreshed considerations or new information or current state of the program etc
 
 \section{Introduction}
 % What is the problem? \\
@@ -87,58 +87,42 @@ We consider that this program will be useful for companies that emphasize team-b
 % List/explain the alternate solutions available.  Why did you not use other solutions? \\
 Numerous solutions to access control have been theorized: Fong et al. defined an access control model that employed authorization decisions in terms of the relationships between the resource owner and a resource requester \cite{fong11}. This solution, however, only addresses the case of simple expressions of policies and become equally simple rules -- this does not reflect the complex nature of actual networks as demonstrated above. Aktoudianakis et al. defined a syntax for specifying a social network and its associated access control policies, which allows for rather simple generation of policies. But the syntax discussed does not implement the direct association with users to define effective policies \cite{aktoudianakis13}. Some solutions have suggested an XML-based format, including Extensible Access Control Markup Language (XACML). This language uses XML to generate both an access control policy language and a request/response language, but a simpler approach would be able to process policies and inquiries in natural expressions without the constraints of XML tags \cite{damiani02}.
 
-% TODO: Dr. Scott asked at Capstone I presentation about using Prolog / Declarative language approaches -- what would that look like or do for us? Why not change?
-present in proposal as an idea of how this might be re-implemented
-expert system: based on knowledgebase and rule, make proactive decisions about incoming data
-this implementation is more built toward a more reactive structure
+Though we may implement XML or JSON formatted data in our logging functionality, we will likely not be using it as a part of the business logic itself.
+
+During our final presentation for Capstone I, it was asked whether we might have considered using Prolog or other declarative language approaches. This is absolutely a possible option, but relies on an expert system approach: based on a knowledgebase and rule, it would make proactive decisions about incoming data. Our application and the scope for which it is originally intended relies on a more reactive approach. 
 
 % Why do you plan on using the solution that you chose? \\
-Our solution stands as a faithful implementation of Dr. Morovat's own Policy Based Language for Access Control \cite{morovat16}. It will simultaneously respect the complexities of a network with subjects, objects, and environmental availability conditions while also achieving a simpler result. The Policy-Based Attribute Access Control model will allow its users to use a natural language to communicate policies, empowering authorized users to take control of their data and reduces risk using natural language requests such as “Bob can edit my tasklist documents on weekdays” and "only I can edit my tasklist documents after 1pm Friday".
+Our solution stands as a faithful implementation of Dr. Morovat's own Policy Based Language for Access Control \cite{morovat16}. It will simultaneously respect the complexities of a network with subjects, objects, and environmental availability conditions while also achieving a simpler result. The Policy-Based Attribute Access Control model allows its users to use a natural language to communicate policies, empowering authorized users to take control of their data and reduces risk using natural language requests such as “Bob can edit my tasklist documents on weekdays” and "only I can edit my tasklist documents after 1pm Friday".
 
-Users will define policies and make inquiries in English via an access control interface. The program will transform user defined policies, using the well-formed format described below, into system rules. It will also transform user inquiries into the well-formed format and process these as system queries.
+Users may currently define policies and make inquiries in English via an access control interface. The program transforms user defined policies, using the well-formed format described below, into system rules. It will also transform user inquiries into the well-formed format and process these as system queries.
 
-% TODO: Describe the current state of the system. Include a detailed description and any digrams/screenshots  from CS 1 data flow diagram, interaction-flow diagram, and MoSCoW analysis. \\
-Given sentences will be in the format: Subject verb object [conditional(time/date)]. As an example, "Alice is allowed to access photos."
-The system will recognize 'Access' words like "Read", "write", and "modify", including common negations. Objects themselves may be referenced by filetype (i.e. "photos" = jpg, gif, etc, and "documents" = txt, docx, etc.). It will differentiate between types of entities in a given network as modeled above:
+Given sentences may be in the format: Subject verb object [conditional(time/date)]. As an example, "Alice is allowed to access photos."
+The system will recognize 'Access' words like "Read", "write", and "modify", including common negations. Objects themselves may be referenced by filetype (i.e. "photos" = jpg, gif, etc, and "documents" = txt, docx, etc.). The system differentiates between types of entities in a given network as modeled above:
 \begin{itemize}
     \item Target users, which get policies protecting them from unauthorized access
     \item Target resources, which get policies protecting them from unmanaged actions
 \end{itemize}
-It will group inquiries into two groups:
+It places inquiries into two groups:
 \begin{itemize}
     \item Attempting to perform an operation against resources like updating or deleting resource
     \item Attempting to access target users (e.g. Facebook may consider this in terms of 'tagging' in a photo or 'poking' a target user)
 \end{itemize}
-The well-formed format template we will use indicates the following:
+The well-formed format template we use indicates the following:
 \begin{itemize}
     \item Words in policy/ inquiry appear with order: subject, verb, object
     \item Words in rule/request appear with order: subject, action, object
 \end{itemize}
 
-The system itself will operate on, at the very least, a simple UI which may be used as a framework for accessing resources in various file system configurations and social networks. Please refer to Table \ref{table:1} for our MoSCoW table of further feature considerations.
+The system itself operates on a simple console-based UI, but the Controller is implemented such that a GUI which follows the same UI programming conventions would work in various file system configurations and social networks. Please refer to Table \ref{table:1} for our MoSCoW table of further feature considerations.
 
-% TODO: Describe proposed additions/changes, including updated MoSCoW
-Pip requirements.txt in place to allow for consistent installation without committing development libraries to the repository
+In terms of develoment improvements for Capstone II, we will be implementing `pip` as a dependency management system, with a `requirements.txt` file in place that will ensure a consistent development environment. We will implement more object oriented approaches (even in our primarily functional paradigm) to ensure a more flexible class structure. This will give us the ability to extend at least our logging and UI functionality to other potential requirements. None are currently forseen, but looser coupling is desirable.
 
-Workflow overhaul
-\begin{itemize}
-    \item Git branching practice
-    \item Create feature branch
-    \item Complete work
-    \item Check out master, pull
-    \item Check out branch, merge master
-    \item Double check it still works
-    \item Push feature branch
-    \item Pull request that branch
-    \item Complete merge
-    \item Delete branch (on github)
-    \item Check out local master, pull
-    \item Delete branch (on local)
-    \item Update team to ensure they pull new master
-\end{itemize}
+As mentioned, we are implementing a log of all entries and their corresponding results. Along with this, we are implementing `numpy` and `pandas` for the beginnings of an analytics framework. Besides the obvious infographics, its purpose will be to help administrators gain some visibility on the most common behaviors by users in the system, indicating most frequently referenced users, files, and directories. It will also monitor for suspicious activity, i.e., requests being made at an inhumanly consistent or fast rate, potentially intentional attempts to overflow the logs, probing for files without correct filenames in a suspect manner, etc.
+
+Ideally we would also like to include more implicit grammar handling and using the analytics to make administrative requests for aliases. For example, if "Becky" is often used in a failing request while "Rebecca" quickly follows in a successful one, it may be fair to assume that the two users are the same. Similar behavior could be implemented for filenames and directories.
 
 % Describe and show a storyboard that illustrates how the new components of your system will be used. \\
-Users will start our program via command line or graphical application. They may then type access control commands into the program. These commands may be written as natural-sounding sentences. The program will then parse the sentence into individual words. These individual words will be used with WordNet’s lexical database to ascertain their grammatical and syntactical significance. The program will use the grammatical and syntactical data to generate a well-formed policy rule for access control based on the original natural-sounding sentence. The newly generated policy will be cross examined with an existing policy text file to ensure the same policy does not already exist. If the newly generated policy does not exist in the policy text file, it will be appended to the policy text file. Dr. Morovat’s own program handles the security activities as determined by the policy rule or inquiry.
+Users may start our program via command line or graphical application. They may then type access control commands into the program. These commands may be written as natural-sounding sentences. The program will then parse the sentence into individual words. These individual words are then processed through Spacy's lexical database to ascertain their grammatical and syntactical significance. The program will use the grammatical and syntactical data to generate a well-formed policy rule for access control based on the original natural-sounding sentence. The newly generated policy will be cross examined with an existing policy text file to ensure the same policy does not already exist. If the newly generated policy does not exist in the policy text file, it will be appended to the policy text file. Dr. Morovat’s own program handles the security activities as determined by the policy rule or inquiry.
 
 \section{Plan}
 
@@ -156,7 +140,7 @@ We will utilize the pytest framework to help streamline the development process 
     \item And on our own, we will be learning learn PyTest and approaches to implement a theoretical model in programming practice (PBAAC).
 \end{enumerate}
 
-% TODO: Conver to table
+% TODO: Clean up for general display and convert to table
 Must haves:
 !  A/T: General code improvement
 !  A/T: Class-based separation of concerns
