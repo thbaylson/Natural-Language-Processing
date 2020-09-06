@@ -1,5 +1,6 @@
 \documentclass[12pt]{article}
-\usepackage[margin=1in]{geometry}
+\usepackage[letterpaper]{geometry}
+\usepackage{times}
 \usepackage{listings}
 \usepackage{graphicx}
 \usepackage{caption}
@@ -7,8 +8,6 @@
 \usepackage{amsmath}
 \usepackage{array}
 \usepackage{enumitem}
-
-\pagestyle{fancy}
 
 \setlength{\parindent}{2em}
 \setlength{\parskip}{1em}
@@ -42,24 +41,21 @@
 \date{Fall, 2020}
 \maketitle
 
-% TODO: Update each paragraph to reference refreshed considerations or new information or current state of the program etc
-
 \section{Introduction}
 % What is the problem? \\
-A benefit of file systems, whether locally housed or “in the cloud”, is the increased work efficiency from users sharing the same resources. But given the growing desire for companies to give their employees this level of efficient access to data, that data is at risk anytime security isn’t easy to establish for its users. And, in the worst cases, where something like a credential file may itself be accessed by a user who should not have access, a security failure cascade may be initiated that could lead to very serious problems for the company and its users.
+Shared file systems, whether based on local storage or storage "in the cloud", bring an increased level of work efficiency from their users. Given the growing methods of shared access and collaboration, however, the data within is often at greater risk than many users might presume. This level of convenience requires a great amount of responsibility, and in a worst case scenario where a credential file itself may be accessed by an unauthorized user, a security failure cascade may lead to very serious problems for the company.
 
 % Why is it important? \\
-Given this, it is extremely important that users can easily and efficiently control access to their data, starting from simple and straightforward privacy purposes all the way to fully customized schedules of access to highly confidential data.
+So it is essential that users are able to easily and efficiently manage access to their data on these shared filesystems, and the greater the granularity, the more security management itself may become part of the user's workflow. This workflow could include everything from simple privacy rule establishment to fully customized schedules of access.
 
 % How do you plan to solve it? \\
-In order to meet this goal, easy and effective means to protect information and resources must be made available to those responsible for its security. 
-Being that natural language is the most natural way to input a command, we propose a program which allows for natural input that will both implement policies to build secure access and receive inquiries to grant or deny access to the inquirer.
+Natural language is of course the most intuitive way to guide the performance of a task, and making natural language processing available to the end-user to establish security rules and query access would allow for easy and effective means to protect information and resources. 
 
-Our system will use a well-formed notation (described below) for both specifying access control policies and authorizing access when inquiries against data are made. In this way, the definition of policies becomes simpler and more efficient, which will allow users to protect their assets under their own terms, and will ensure that requesters can feed access requests to the system just as simply.
+Our system for policy based access control implements a well-formed notation (described below) for both specifying access control policies and authorizing access when inquiries against data are made. In this way, the definition of policies becomes simpler and more efficient, which will allow users to protect their assets under their own terms, and will ensure that requesters can feed access requests to the system just as simply.
 
 \section{Problem Definition}
 % Briefly describe the data that you used (or plan to use).\\ 
-All types of data in a file system are at risk when access is not defined or if that access is defined in an unclear or incomplete manner. Our system will take user input and determine the intent of a given security policy or access inquiry for the extant data on a network or filesystem which implements our access control methods.
+All types of data in a file system are at risk when access is not defined or if that access is defined in an unclear or incomplete manner. Our system accepts user input and determines the intent of a given security policy or access inquiry for the extant data on a network or filesystem which implements our access control methods.
 
 % What do people usually try to do with the data? \\
 While typical access for a given file may be legitimate, when the owner of data is not able to (or aware of how to) adjust or monitor access (especially given the complexity of certain team-based file access), it’s easy for security requirements to relax. The data goes either unsecured or unmonitored, increasing unnecessary risk.
@@ -77,7 +73,7 @@ A given network with subjects, objects, and defined relationships can be interpr
 Though programs can be written for security management, they would simply be another step in the chain that would require attention, setup, and maintenance. Much research has been performed, some of which is cited within this proposal, but no specific approach has proven quite flexible enough for general use within social networks.
 
 % What are the specific user requirements? \\
-Our system must process natural user command sentences in a given structure within a basic UI, resulting in appending well-formatted data to a policy file in the user's directory. This will require a simple UI for access control input, which could easily be presented within an intranet-based web-application or desktop application. It will be flexible and responsive, as companies may wish to have more granular control over its presentation. In the event of an error in input or authorization attempt, depending on certain circumstances, the program may ask for further clarification. A program already exists which will manage reading the policy rules and acting on user queries, and it also handles conflicts, giving priority to most recent policy input.
+Our system must process natural user command sentences in a given structure within a basic UI, resulting in appending well-formatted data to a policy file in the user's directory. This only requires a simple UI for access control input, and our current implementation could easily transition to a desktop application or intranet-based web-application. During this second phase of Capstone, we will embrace abstraction to broaden its access to allow it greater flexibility, as companies may wish to have more granular control over its presentation. In the event of an error in input or authorization attempt, depending on certain circumstances, the program may ask for further clarification. A program already exists which will manage reading the policy rules and acting on user queries, and it also handles conflicts, giving priority to most recent policy input.
 
 % List a company and organization that may use the features of this program. \\
 We consider that this program will be useful for companies that emphasize team-based access to shared files, especially where leadership is comprised of users for whom it is not time-efficient to learn the details of things like `chmod` commands. Even Western Carolina University would benefit from implementing this approach, and it goes without saying that more general social networks such as Facebook might benefit from users who would like to take a more involved stance on how their posted files are seen by other users.
@@ -92,7 +88,7 @@ Though we may implement XML or JSON formatted data in our logging functionality,
 During our final presentation for Capstone I, it was asked whether we might have considered using Prolog or other declarative language approaches. This is absolutely a possible option, but relies on an expert system approach: based on a knowledgebase and rule, it would make proactive decisions about incoming data. Our application and the scope for which it is originally intended relies on a more reactive approach. 
 
 % Why do you plan on using the solution that you chose? \\
-Our solution stands as a faithful implementation of Dr. Morovat's own Policy Based Language for Access Control \cite{morovat16}. It will simultaneously respect the complexities of a network with subjects, objects, and environmental availability conditions while also achieving a simpler result. The Policy-Based Attribute Access Control model allows its users to use a natural language to communicate policies, empowering authorized users to take control of their data and reduces risk using natural language requests such as “Bob can edit my tasklist documents on weekdays” and "only I can edit my tasklist documents after 1pm Friday".
+Our solution stands as a faithful implementation of Dr. Morovat's own Policy Based Language for Access Control \cite{morovat16}. It simultaneously respects the complexities of a network with subjects, objects, and environmental availability conditions while also achieving a simple outcome. The Policy-Based Attribute Access Control model allows its users to use a natural language to communicate policies, empowering authorized users to take control of their data and reduces risk using natural language requests such as “Bob can edit my tasklist documents on weekdays” and "only I can edit my tasklist documents after 1pm Friday".
 
 Users may currently define policies and make inquiries in English via an access control interface. The program transforms user defined policies, using the well-formed format described below, into system rules. It will also transform user inquiries into the well-formed format and process these as system queries.
 
@@ -140,56 +136,6 @@ We will utilize the pytest framework to help streamline the development process 
     \item And on our own, we will be learning learn PyTest and approaches to implement a theoretical model in programming practice (PBAAC).
 \end{enumerate}
 
-% TODO: Clean up for general display and convert to table
-Must haves:
-!  A/T: General code improvement
-!  A/T: Class-based separation of concerns
-!  A: Virtual Environment Setup and spacy into repo
-!  A: Handling distinction from her message regarding X/Y “there exists” and “all”
-!  T: Third party library to analyze entry logs
-!  Confirm "can access" == "is allowed to access", confirm how negations work
-!  Displaying analytics images / reports
-Word clouds / associations / spacy diagrams
-!  Some level of sanity checking to avoid overflowing logged files, etc.
-
-Should haves:
-o  Add stop word recognition to output
-o  Un-abbreviate parts of speech for display
--h argument to enable printing table
-o  Dates / times
-Spacy tags for entity recognition
-Entity Extractions
-o  Self reference / duplicate username issues (two of the same name entities in the same dict)
-“bob can access bob’s files” -- how to handle ambiguity?
-o  If “textfile”, how to differentiate between "testfile.txt" and "testfile.docx" by prompting user input
-o  Analysis that would determine suspect entries
-Suspicion based on analytics (find references for works cited)
-Too-regular or too-fast frequencies of requests
-Probing for files in a suspect manner
-
-Could haves:
-? Mirror short/long syntax from paper to draw connection
-? Implicit grammar handling:
-“Cannot access after 5pm on thursdays”: implied availability at 12am Friday?
-“Can only access on weekends” => “Cannot access on weekends?
-?  Recognizing verbs as filenames “access” / “write.txt” / “edit.jpg” (especially where extension is not given)
-?  Aliasing as based on analytics (find references for works cited)
-Expand isAccessAction() to list of accepted access words?
-"read", "see", "view", etc. / "write", "edit", "change", etc.
-Move to database
-Upon seeing a new keyword, especially given frequency, maybe present to allow as an acceptable keyword
-If “pull down” is used frequently by users at a given site, maybe ask administrative user to select the intended behavior of this access
-If “Becky” is used frequently, fails, then is immediately followed with successful “Rebecca”, maybe allow admin to choose this as an alias
-
-Won't haves:
-x  Adding weight to specific individual names on network for policies/requests
-Training spacy for named entities
-x  May have mock social network with superusers (hierarchies) or teams with associated files/directories for which any member can set access (but not for other members of that team)
-x  Our own custom implementation of spacy model for nlp() call
-x  Securing policy file (Dr. Morovat has written a paper for this)
-x  Mobile devices recognizing environmental contexts?
-Can’t access something offsite, implicit requests for access to data?
-
 \begin{table}[p]
     \begin{center}
         \begin{tabular}{ | m{1.3in} | m{1.3in}| m{1.3in} | m{1.3in} | } 
@@ -197,17 +143,15 @@ Can’t access something offsite, implicit requests for access to data?
         Must Have & Should Have & Could Have & Won't Have \\ 
         \hline
         \hline
-        PBAAC Implementation & Basic GUI with function calls for business embedding and customization & Unstructured user sentences & Language support other than English \\ 
+        Continued PBAAC Implementation & Stop word recognition & Implicit grammar handling & Social network for implementation \\ 
         \hline
-        Appending distinct well-formed policies to a text file & Recognition of grammatical differences & Spellchecker &   \\ 
+        Class-based separation of concerns & More human-friendly output on request & Aliasing based on analytics & Adding weight to specific individual names on network  \\ 
         \hline
-          &   & Auto-complete &   \\ 
+        Analytics of logged inputs and outputs & Handling of environmental (date/time) conditions & Encryption of policy files & \\ 
         \hline
-          &   & Encryption of Policy File &   \\ 
+        Visualizations for analytics  &   & Encryption of Policy File &   \\ 
         \hline
-          &   & Machine learning applied to analytics &   \\ 
-        \hline
-          &   & Social Network Demo &   \\ 
+          &  Reporting of suspicious activity based on analytics & & Mobile device recognition of environmental contexts  \\ 
         \hline
         \end{tabular}
         \caption{MoSCoW Board}
@@ -215,27 +159,25 @@ Can’t access something offsite, implicit requests for access to data?
     \end{center}
 \end{table}
 
-% TODO: Update with info from timetable in capstone doc
-
 \begin{table}[p]
     \begin{center}
         \begin{tabular}{ | m{0.4in} | m{4in}| m{1.6in} | }
         \hline
         Date & Deliverable & Item Due \\ 
         \hline
-        09/01/20 & Proposal with Timetable &   \\ 
+        09/01/20 & Sprint 1: Complete scope of project with timetable, class based separation of concerns &   \\ 
         \hline
-        09/15/20 & Input via interface, accept and validate, handle errors, test on frameworks &   \\ 
+        09/15/20 & Sprint 2: Analytics library, data storage, grammar detail confirmations & Proposal  \\ 
         \hline
-        09/29/20 & Sorting words into parts of speech, recognize access actions (“read” / “write” / “access”) and their negations, poster content preparation &   \\ 
+        09/29/20 & Sprint 3: Stop word recognition, human-readable output of processed data, environmental condition handling &   \\ 
         \hline
-        10/13/20 & Accept specific object references (“house.png”), Accept generalized object references and groups by filetype (“photos”, “documents”) &   \\ 
+        10/13/20 & Sprint 4: Self-reference, duplication issues, ambiguity handling &   \\ 
         \hline
-        10/27/20 &   & Poster due \\ 
+        10/27/20 & Sprint 5: Input validation, sanity checking, completed testing, suspicion analysis  &  \\ 
         \hline
-        11/10/20 & GUI implementation / function calls, Generate well-formed format, Append the formatted rule to user policy file, Test with policy reader program &   \\
+        11/10/20 & Sprint 6: Final touches &   \\
         \hline
-        11/24/20 &   & Poster demonstration \\ 
+        11/24/20 & Wrap-up: Capstone work complete, final report, reflection essay  & Final meeting, establish date of presentation \\ 
         \hline
         \end{tabular}
         \caption{Project Time Table}
