@@ -1,6 +1,5 @@
 from enum import Enum
 
-
 class AccessWords(Enum):
     access =        ["access",      "edit"]
     append =        ["append",      "edit"]

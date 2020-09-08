@@ -8,15 +8,17 @@ import spacy
 # from spacy import displacy
 # from pathlib import Path
 from accesswords import AccessWords
+from logger import Logger
 
 # TODO: Need file headers
 
 
 class Controller:
 
-    def process_input(self, inp) -> None:
+    def process_input(self, inp: str) -> None:
         # Load core reference
         nlp = spacy.load("en_core_web_sm")
+        logger = Logger()
 
         # Get local file and folder information
         local_dir = '../'
@@ -49,11 +51,12 @@ class Controller:
         # Print out column display to demonstrate processing
         self.print_column_display(grammar)
 
-        # Generate rule and write to file
+        # Generate rule and write to files
         rule = self.get_rule(grammar, target)
-        print(rule)
-        self.write_to_file(rule)
+        logger.log(rule, inp)
 
+        rule = self.format_rule(rule)
+        self.write_to_file(rule)
 
     def split_input(self, inp: list) -> str:
         """
@@ -180,19 +183,24 @@ class Controller:
         return syn_long
 
 
-    def get_rule(self, syn_short: dict, target_res: dict) -> str:
+    def get_rule(self, syn_short: dict, target_res: dict) -> dict:
         """
         Placeholder function to help set up PyTest
         resource_data[target] = target_type, where target_type is either case or name
         """
-        user_name = self.get_affected_user(syn_short) #The 'Bob' in 'Bob can access my documents'
-        action_name = self.get_access_action(syn_short)
-        target_res_item = list(target_res.keys())[0]
-        target_res_type = target_res[target_res_item]
-        target_user = self.get_target_user(syn_short) #The 'my' in 'Bob can access my documents'
+        rule = {}
+        rule['acting_user'] = self.get_affected_user(syn_short) #The 'Bob' in 'Bob can access my documents'
+        rule['action'] = self.get_access_action(syn_short)
+        rule['res'] = list(target_res.keys())[0]
+        rule['res_type'] = target_res[rule['res']]
+        rule['target_user'] = self.get_target_user(syn_short) #The 'my' in 'Bob can access my documents'
 
+        return rule
+
+    def format_rule(self, rule: dict) -> str:
+        """Formats the rule dictionary into a single String"""
         rule = '(X user (name: {})), (action (name: {})), (X target_resource ({}: {})), (X target_user (name: {}))'\
-            .format(user_name, action_name, target_res_type, target_res_item, target_user)
+            .format(rule['acting_user'], rule['action'], rule['res_type'], rule['res'], rule['target_user'])
         return rule
 
 
@@ -268,7 +276,7 @@ class Controller:
                 else:
                     target = word
                 break
-        return target
+        return target.lower()
 
 
     def get_affected_user(self, grammar: dict) -> str:

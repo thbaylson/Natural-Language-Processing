@@ -78,6 +78,9 @@ fabric.properties
 policy.txt
 old_policy.txt
 
+# Log files
+log.csv
+
 # Proposal Build Data
 *.aux
 *.bbl
