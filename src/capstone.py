@@ -13,6 +13,8 @@ def main():
         inp = ui.receive_input()
         if not ui.is_finished() and inp[0] == "1":
             controller.process_input(inp[1:])
+        if not ui.is_finished() and inp[0] == "3":
+            ui.display_processed_info(controller.last_entry)
 
 if __name__ == "__main__":
     main()

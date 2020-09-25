@@ -1,6 +1,4 @@
-from IPython.display import display, HTML
-import plotly.express as px
-
+from wordcloud import WordCloud, STOPWORDS
 from reporter import Reporter
 
 class ConsoleUI:
@@ -9,7 +7,7 @@ class ConsoleUI:
     finished_prompt = False
 
     def receive_input(self) -> str:
-        inp = input("\n0: Quit\n1: Create New Rule\n2: Run an Analysis\n>> ")
+        inp = input("\n0: Quit\n1: Create New Rule\n2: Run an Analysis\n3: Processed Info\n>> ")
         if inp == "0":
             self.finished = True
         if inp == "1":
@@ -19,6 +17,8 @@ class ConsoleUI:
                 self.prompt_for_report()
 
             self.finished_prompt = False
+        if inp == "3":
+            print("\nProcessed Info\n")
         return inp
 
     def prompt_for_report(self):
@@ -31,6 +31,7 @@ class ConsoleUI:
                             \n3: Employee Policy Count \
                             \n4: Column Error Count \
                             \n5: Find Errors \
+                            \n6: Make WordCloud \
                             \n>> ")
         if inp == "0":
             self.finished_prompt = True
@@ -49,6 +50,8 @@ class ConsoleUI:
         
         elif inp == "5":
             self.report_wrapper("\nFind Errors", report.find_errors())
+        elif inp == "6":
+            self.make_word_cloud(report.log_df)
 
     def report_wrapper(self, title: str, output) -> None:
         """ Used to print reports that don't need a row count"""
@@ -60,6 +63,38 @@ class ConsoleUI:
         rows = input(title + "\nHow Many Rows?\n>> ")
         print(func(int(rows) if rows != '' else 5 ))
         input("(Enter to Continue)")
+
+    def make_word_cloud(self, df) -> None:
+        """ Creates a WordCloud from a Pandas DataFrame and the saves it to the resources folder"""
+        cloud_words = '' 
+        
+        #cloud_df = log_df[['acting_user', 'action', 'target_type', 'target_resource', 'target_user', 'raw']]
+        cloud_df = df[['raw']]
+        
+        # iterate through the csv file 
+        for val in cloud_df.to_numpy():
+            
+            # typecaste each val to string 
+            val = str(val)
+        
+            # split the value 
+            tokens = val.split() 
+                
+            # Converts each token into lowercase 
+            for i in range(len(tokens)): 
+                tokens[i] = tokens[i].lower()
+            
+            cloud_words += " ".join(tokens) + " "
+        
+        wordcloud = WordCloud(width = 800, height = 800, 
+                            stopwords = set(STOPWORDS), 
+                            min_font_size = 15
+                            ).generate(cloud_words) 
+        
+        wordcloud.to_file("../resources/word_cloud.png")
+
+    def display_processed_info(self, string: str) -> None:
+        print(string)
 
     def is_finished(self) -> bool:
         return self.finished

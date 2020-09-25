@@ -1,12 +1,8 @@
-import re
+import spacy
 import sys
 import os
+import re
 
-import spacy
-
-# Uncomment to allow for word association graphing
-# from spacy import displacy
-# from pathlib import Path
 from accesswords import AccessWords
 from logger import Logger
 
@@ -15,9 +11,12 @@ from logger import Logger
 
 class Controller:
 
+    def __init__(self):
+        self.nlp = spacy.load("en_core_web_sm")
+        self.last_entry = ""
+
     def process_input(self, inp: str) -> None:
         # Load core reference
-        nlp = spacy.load("en_core_web_sm")
         logger = Logger()
 
         # Get local file and folder information
@@ -27,23 +26,15 @@ class Controller:
                          folder.is_dir()]
         local_exts = [file.split('.')[-1] for file in local_files]
 
-        # Process input
+        # Process input TODO: Is this actually doing anything?
         processed_input = self.split_input(inp)
 
         # The call nlp() uses the default model. To speed things up, we may want to define our own model
-        tokens = nlp(processed_input)
-
-        # Uncomment to allow for output of graph
-        """
-        tokens = nlp("Bob can edit Alice's documents")
-        svg = displacy.render(tokens, style="dep", jupyter=False)
-        file_name = '-'.join([w.text for w in tokens if not w.is_punct]) + ".svg"
-        output_path = Path(file_name)
-        output_path.open("w", encoding="utf-8").write(svg)
-        """
+        tokens = self.nlp(processed_input)
 
         # Build the grammar
         grammar = self.get_grammar(tokens)
+        print(grammar)
 
         # Scan for target_resource
         target = self.get_target_resource(grammar, local_files, local_folders, local_exts)
@@ -58,6 +49,7 @@ class Controller:
         rule = self.format_rule(rule)
         self.write_to_file(rule)
 
+    
     def split_input(self, inp: list) -> str:
         """
         Recieve command line input, search for errors, and split the input on
@@ -103,7 +95,7 @@ class Controller:
         if not resource_found:
             # Search filetype reference
             for word in inp:
-                if word in exts:
+                if word in exts or ("." + word) in exts:
                     target = word
                     target_type = "case"
 
@@ -121,6 +113,7 @@ class Controller:
         col_name_pos = "Part of Speech"
         col_name_neg = "Negation"
         col_name_acc = "Access"
+        col_stop_word = "Stop Word"
 
         # If the longest word is greater than our longest col header name
         for word in grammar:
@@ -129,23 +122,29 @@ class Controller:
             else:
                 col_width = len(col_name_pos) + 2
 
+        # Initialize spacy stop words list
+        stopwords = self.nlp.Defaults.stop_words
+
+
         # Building the columns
-        print("\nProcessed Info:")
-        print('{0:<{width}} {1:<{width}} {2:^10} {3:^8}'.format(col_name_word, col_name_pos,
-                                                                col_name_neg, col_name_acc,
-                                                                width=col_width))
+        self.last_entry = '{0:<{width}} {2:^10} {3:^8} {4:^8} {1:^{width}}'.format(col_name_word, col_name_pos,
+                                                                col_name_neg, col_name_acc, col_stop_word,
+                                                                width=col_width)
         # Fill out the columns
         pos_index = 1
         for word in grammar:
-            pos_str = grammar[word][pos_index]
+            pos_str = spacy.explain(grammar[word][pos_index])
             neg = ""
             acc = ""
+            stop = ""
             if self.is_negation_word(grammar[word]):
                 neg = "-"
             if self.is_access_word(word):
                 acc = "*"
-            print('{0:<{width}} {1:<{width}} {2:^10} {3:^8}'.format(word, pos_str, neg, acc,
-                                                                    width=col_width))
+            if word in stopwords:
+                stop = "*"
+            self.last_entry += '\n{0:<{width}} {2:^10} {3:^8} {4:^8} {1:^{width}}'.format(word, pos_str, neg, acc, stop,
+                                                                    width=col_width)
 
 
     def get_grammar(self, tokens: list) -> dict:
@@ -153,12 +152,16 @@ class Controller:
         # SpaCy can find tokens and parts of speech at the same time
         grammar = {}
 
+        #for ent in tokens.ents:
+        #    print(ent.text, ent.label_)
+
         # Creates a dictionary with keys being the input words and their values being that input
         # word's P.O.S.
         for token in tokens:
             grammar[token.text.lower()] = [token.pos_.lower(),
                                            token.dep_.lower(),
-                                           token.lemma_.lower()]
+                                           token.lemma_.lower(),
+                                           token.ent_type_.lower()]
 
         # Find punctuation in the grammar
         words_to_remove = []
@@ -194,22 +197,19 @@ class Controller:
         rule['res'] = list(target_res.keys())[0]
         rule['res_type'] = target_res[rule['res']]
         rule['target_user'] = self.get_target_user(syn_short) #The 'my' in 'Bob can access my documents'
-
+        rule['date_time'] = self.get_date_time(syn_short)
         return rule
 
+    
     def format_rule(self, rule: dict) -> str:
         """Formats the rule dictionary into a single String"""
-        rule = '(X user (name: {})), (action (name: {})), (X target_resource ({}: {})), (X target_user (name: {}))'\
-            .format(rule['acting_user'], rule['action'], rule['res_type'], rule['res'], rule['target_user'])
+        rule = '(X user (name: {})), (action (name: {})), (X target_resource ({}: {})), (X target_user (name: {})), (Date/Time (time: {})'\
+            .format(rule['acting_user'], rule['action'], rule['res_type'], rule['res'], rule['target_user'], rule['date_time'])
         return rule
 
 
     def write_to_file(self, rule: str) -> None:
-        """Prints the policy rule to the policy file
-        policy_file = open("./policy.txt", "a+")
-        policy_file.write("\nRule1 {" + rule + "}")
-        policy_file.close()
-        """
+        """Prints the policy rule to the policy file"""
         new_rule_number = 1
 
         # Use the with keyword here to let Python close the file even if there's an error.
@@ -252,11 +252,15 @@ class Controller:
         if it doesn't, it returns an empty string.
         """
         access = ""
+        neg_bool = False
         for word in grammar:
+            neg_bool = self.is_negation_word(grammar[word])
             if 'verb' in grammar[word]:
                 # We have to check the word's root, which is last in the last
                 if self.is_access_word(grammar[word][-1]):
                     access = (getattr(AccessWords, grammar[word][-1]).value)[1]
+                    if self.has_negation(grammar):
+                        access = "-" + access
                     break
         return access
 
@@ -292,6 +296,21 @@ class Controller:
                     affected = word
                     break
         return affected
+
+    def get_date_time(self, grammar: dict) -> str:
+        """
+        Searches a dictionary of words to identify if it contains a date or time.
+        If the dictionary has a date or time, this function returns the date or time.
+        if it doesn't, it returns an empty string.
+        """
+        dates = []
+        times = []
+        for word in grammar:
+            if "date" in grammar[word]:
+                dates.append(grammar[word][2])
+            if "time" in grammar[word]:
+                times.append(grammar[word][2])
+        return str(dates) + " " + str(times)
 
 
     def is_access_word(self, word: str) -> bool:

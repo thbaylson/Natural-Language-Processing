@@ -1,10 +1,10 @@
 import pandas as pd
 import math
-
 import numpy as np
 
 class Reporter:
-    """ Do Stuff """
+    """ Reads the contents of log.csv into a Pandas DataFrame. The provided methods can be used to
+    run analytics on the data. All methods return a Pandas DataFrame."""
     def __init__(self):
         self.log_df = pd.read_csv("log.csv")
         #self.log_df.set_index("id", inplace= True)
@@ -28,3 +28,13 @@ class Reporter:
 
     def find_errors(self, n=5):
         return self.log_df[self.log_df.isnull().any(axis=1)].tail(n)
+    
+    # Unsure where to put this. Depends on spacy to create an svg graph
+    """
+    def spacy_graph(self):
+        tokens = nlp("Bob can edit Alice's documents")
+        svg = displacy.render(tokens, style="dep", jupyter=False)
+        file_name = '-'.join([word.text for word in tokens if not word.is_punct]) + ".svg"
+        output_path = Path(file_name)
+        output_path.open("w", encoding="utf-8").write(svg)
+    """
