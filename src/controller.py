@@ -34,7 +34,6 @@ class Controller:
 
         # Build the grammar
         grammar = self.get_grammar(tokens)
-        print(grammar)
 
         # Scan for target_resource
         target = self.get_target_resource(grammar, local_files, local_folders, local_exts)
