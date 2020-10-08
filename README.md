@@ -25,6 +25,17 @@ X target_resource (name: targetFile)
 X target_user: (name: fileOwner)
 ```
 
+## Constraints
+
+**Unique Identification**
+
+Users must be identified by unique ID (e.g. there cannot be two "Bobs", but there may be a "Bob1
+" and "Bob2", etc.)
+
+**Time Input**
+
+Please enter time in 24-hour formats (e.g. 18:00 for 6pm)
+
 # Git Branching Workflow
 * Create feature branch
 * Complete work
