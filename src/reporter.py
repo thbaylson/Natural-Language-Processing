@@ -1,12 +1,13 @@
 import pandas as pd
 import math
 import numpy as np
+from debuglog import DebugLog as debug
 
 class Reporter:
-    """ Reads the contents of log.csv into a Pandas DataFrame. The provided methods can be used to
+    """ Reads the contents of log.json into a Pandas DataFrame. The provided methods can be used to
     run analytics on the data. All methods return a Pandas DataFrame."""
     def __init__(self):
-        self.log_df = pd.read_csv("log.csv")
+        self.log_df = pd.read_json("log.json", orient= "table")
         #self.log_df.set_index("id", inplace= True)
 
     def log_tail(self, n=5):

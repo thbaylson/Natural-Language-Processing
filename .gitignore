@@ -79,7 +79,7 @@ policy.txt
 old_policy.txt
 
 # Log files
-log.csv
+src/log.json
 
 # Proposal Build Data
 *.aux

@@ -1,5 +1,6 @@
 from ui import ConsoleUI
 from controller import Controller
+from debuglog import DebugLog as debug
 
 def main():
     # Load base classes
@@ -11,10 +12,12 @@ def main():
     # Run the ui while the user has not finished rule generation or requests
     while not ui.is_finished():
         inp = ui.receive_input()
-        if not ui.is_finished() and inp[0] == "1":
-            controller.process_input(inp[1:])
-        if not ui.is_finished() and inp[0] == "3":
-            ui.display_processed_info(controller.last_entry)
+        if len(inp) > 0:
+            if not ui.is_finished() and inp[0] == "1":
+                if len(inp) > 1:
+                    controller.process_input(inp[1:])
+            if not ui.is_finished() and inp[0] == "3":
+                ui.display_processed_info(controller.last_entry)
 
 if __name__ == "__main__":
     main()

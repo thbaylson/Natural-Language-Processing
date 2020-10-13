@@ -2,6 +2,7 @@ import spacy
 import sys
 import os
 import re
+from debuglog import DebugLog as debug
 
 from accesswords import AccessWords
 from logger import Logger
@@ -147,7 +148,9 @@ class Controller:
 
 
     def get_grammar(self, tokens: list) -> dict:
-        """ Placeholder function to help set up PyTest"""
+        """
+        Transfroms a list of spaCy tokens into a dictionary
+        """
         # SpaCy can find tokens and parts of speech at the same time
         grammar = {}
 
@@ -187,8 +190,8 @@ class Controller:
 
     def get_rule(self, syn_short: dict, target_res: dict) -> dict:
         """
-        Placeholder function to help set up PyTest
-        resource_data[target] = target_type, where target_type is either case or name
+        Uses combines the contents of the grammar dictionary and the resource dictionary
+        in order to create the final rule dictionary.
         """
         rule = {}
         rule['acting_user'] = self.get_affected_user(syn_short) #The 'Bob' in 'Bob can access my documents'
@@ -196,19 +199,28 @@ class Controller:
         rule['res'] = list(target_res.keys())[0]
         rule['res_type'] = target_res[rule['res']]
         rule['target_user'] = self.get_target_user(syn_short) #The 'my' in 'Bob can access my documents'
-        rule['date_time'] = self.get_date_time(syn_short)
+        rule['conditions'] = self.get_conditions(syn_short)
         return rule
 
     
     def format_rule(self, rule: dict) -> str:
-        """Formats the rule dictionary into a single String"""
-        rule = '(X user (name: {})), (action (name: {})), (X target_resource ({}: {})), (X target_user (name: {})), (Date/Time (time: {})'\
-            .format(rule['acting_user'], rule['action'], rule['res_type'], rule['res'], rule['target_user'], rule['date_time'])
+        """
+        Formats the rule dictionary into a single well formed String
+        """
+        user_seg = '(X user (name: {}))'.format(rule['acting_user'])
+        action_seg = ', (action (name: {}))'.format(rule['action'])
+        res_seg = ', (X target_resource ({}: {}))'.format(rule['res_type'], rule['res'])
+        target_user_seg = ', (X target_user (name: {}))'.format(rule['target_user'])
+        conditions_seg = ', (Conditions (date-time: {})'.format(rule['conditions'])
+
+        rule = user_seg + action_seg + res_seg + target_user_seg + conditions_seg
         return rule
 
 
     def write_to_file(self, rule: str) -> None:
-        """Prints the policy rule to the policy file"""
+        """
+        Prints the policy rule to the policy file
+        """
         new_rule_number = 1
 
         # Use the with keyword here to let Python close the file even if there's an error.
@@ -296,7 +308,7 @@ class Controller:
                     break
         return affected
 
-    def get_date_time(self, grammar: dict) -> str:
+    def get_conditions(self, grammar: dict) -> str:
         """
         Searches a dictionary of words to identify if it contains a date or time.
         If the dictionary has a date or time, this function returns the date or time.

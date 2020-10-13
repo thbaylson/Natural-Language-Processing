@@ -1,34 +1,58 @@
 import datetime
+import json
+import pandas as pd
 import os
+from pathlib import Path
+from debuglog import DebugLog as debug
 
 class Logger:
-    """Do Stuff """
+    """
+    Creates and maintains a log of information. Such information includes: well formed rules, 
+    the data and time the rule was created, and the raw user input sentence.
+    """
 
     def log(self, rule: dict, raw: str) -> None:
         """
         Recieves a rule dictionary and a raw input string to create 
         a log string. Writes the log string to the log.csv file
         """
+        filename = "log.json"
+        Path(filename).touch()
         
-        log_string = self.split_rule(rule)
-        log_string += self.get_date_time()
-        log_string += "," + raw
-        self.write_to_log(log_string)
+        json_data = self.make_json(rule, raw)
+        json_df = pd.DataFrame([json_data])
+        
+        # If the log file is not empty, read the file and append the new record to it
+        if os.stat(filename).st_size > 0:
+            log = pd.read_json(filename, orient= "table")
+            log = log.append(json_df, ignore_index= True)
+            log.to_json(filename, orient= "table")
+        # If the log file is empty, write the json_df DataFrame to it
+        else:
+            json_df.to_json(filename, orient= "table")
+        
 
-    def split_rule(self, rule: dict)->str:
-        """Splits a dict into a comma separeted string"""
+    def make_json(self, rule: dict, raw: str) -> dict:
+        """ Create a dictionary to be saved to a text file"""
 
-        rule_string = '{},{},{},{},{}'\
-            .format(rule['acting_user'], rule['action'], rule['res_type'], rule['res'], rule['target_user'])
-        return rule_string
-
-    def get_date_time(self) -> str:
-        """Finds the date and time and returns it in a comma seperated string"""
         time = datetime.datetime.now()
-        return ",{},{}".format(time.strftime("%x"), time.strftime("%X"))
 
-    def write_to_log(self, inp:str) -> None:
-        """Writes log information to log.csv"""
+        json_data = {}
+        json_data["rule_id"] = self.get_id()
+        json_data["acting_user"] = rule['acting_user']
+        json_data["action"] = rule['action']
+        json_data["target_type"] = rule['res_type']
+        json_data["target_resource"] = rule['res']
+        json_data["target_user"] = rule['target_user']
+        json_data["date"] = time.strftime("%x")
+        json_data["time"] = time.strftime("%X")
+        json_data["raw"] = raw
+
+        return json_data
+
+
+    def get_id(self) -> int:
+        """ Get the id number for the data"""
 
         id_number = 1
 
@@ -60,7 +84,5 @@ class Logger:
                 id_number = int(rule_number[1]) + 1
 
         # Finally we append the new log to log.csv
-        logger_file = open("./log.csv", "a+")
-        logger_file.write(str(id_number) + "," + inp + "\n")
-        logger_file.close()
+        return id_number
 

@@ -1,5 +1,6 @@
 from wordcloud import WordCloud, STOPWORDS
 from reporter import Reporter
+from debuglog import DebugLog as debug
 
 class ConsoleUI:
 
