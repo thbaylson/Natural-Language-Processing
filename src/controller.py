@@ -5,6 +5,7 @@ import re
 from debuglog import DebugLog as debug
 
 from accesswords import AccessWords
+from days import Days
 from logger import Logger
 
 # TODO: Need file headers
@@ -215,7 +216,11 @@ class Controller:
         action_seg = ', (action (name: {}))'.format(rule['action'])
         res_seg = ', (X target_resource ({}: {}))'.format(rule['res_type'], rule['res'])
         target_user_seg = ', (X target_user (name: {}))'.format(rule['target_user'])
-        conditions_seg = ', (Conditions (date-time: {})'.format(rule['conditions'])
+        
+        # There may be more than one condition
+        conditions_seg = ""
+        for condition in rule['conditions']:
+            conditions_seg += ', (Y condition (name: {}))'.format(condition)
 
         rule = user_seg + action_seg + res_seg + target_user_seg + conditions_seg
         return rule
@@ -271,9 +276,9 @@ class Controller:
         for word in grammar:
             neg_bool = self.is_negation_word(grammar[word])
             if 'verb' in grammar[word]:
-                # We have to check the word's root, which is last in the last
-                if self.is_access_word(grammar[word][-1]):
-                    access = (getattr(AccessWords, grammar[word][-1]).value)[1]
+                # We have to check the word's root, which is the third position
+                if self.is_access_word(grammar[word][2]):
+                    access = (getattr(AccessWords, grammar[word][2]).value)[1]
                     if self.has_negation(grammar):
                         access = "-" + access
                     break
@@ -310,22 +315,49 @@ class Controller:
                 if ('nsubj' in grammar[word]) or ('nsubjpass' in grammar[word]) or ('pobj' in grammar[word]):
                     affected = word
                     break
-        return affected
+            elif('pron' in grammar[word] and 'nsubj' in grammar[word]):
+                home_dir = os.path.expanduser('~')
+                affected = home_dir.split("\\")[-1]
+        return affected.lower()
 
-    def get_conditions(self, grammar: dict) -> str:
+    def get_conditions(self, grammar: dict) -> list:
         """
         Searches a dictionary of words to identify if it contains a date or time.
         If the dictionary has a date or time, this function returns the date or time.
         if it doesn't, it returns an empty string.
         """
-        dates = []
-        times = []
+        conditions = []
+        preposition = ""
         for word in grammar:
-            if "date" in grammar[word]:
-                dates.append(grammar[word][2])
-            if "time" in grammar[word]:
-                times.append(grammar[word][2])
-        return str(dates) + " " + str(times)
+            pos_list = grammar[word]
+            
+            # Check to see if the word is a weekday
+            if('weekday' in pos_list):
+                weekdays = (getattr(Days, "weekdays").value)
+                for day in weekdays:
+                    conditions.append(day)
+            
+            # Check to see if the word is a weekend
+            if('weekend' in pos_list):
+                weekends = (getattr(Days, "weekends").value)
+                for day in weekends:
+                    conditions.append(day)
+            
+            # Check to see if the word is a day. The parts of speech for a day can be quite complex
+            if((('propn' in pos_list or 'noun' in pos_list) and ('pobj' in pos_list or 'date' in pos_list))\
+                and not conditions.__contains__(word)):
+                conditions.append(grammar[word][2])
+            
+            # Check to see if there is a prepositional time range being specified
+            if('before' in pos_list or 'after' in pos_list):
+                preposition = word
+            
+            # Check to see if the word is a time and prepend the prepositional argument
+            if('num' in pos_list and 'pobj' in pos_list):
+                if('time' in pos_list and len(word) < 5):
+                    word = "0" + word
+                conditions.append("{}_{}".format(preposition, word))
+        return conditions
 
 
     def is_access_word(self, word: str) -> bool:

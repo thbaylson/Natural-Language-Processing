@@ -48,6 +48,7 @@ class Logger:
         json_data["target_type"] = rule['res_type']
         json_data["target_resource"] = rule['res']
         json_data["target_user"] = rule['target_user']
+        json_data["has_conditional"] = 1 if(len(rule['conditions']) > 0) else 0
         json_data["date"] = time.strftime("%x")
         json_data["time"] = time.strftime("%X")
         json_data["raw"] = raw
