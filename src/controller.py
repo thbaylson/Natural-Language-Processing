@@ -12,6 +12,10 @@ from logger import Logger
 
 class Controller:
 
+    debug = debug()
+    debug.set_calling_class = "Controller"
+    debug.set_debugging(True)
+
     def __init__(self):
         self.nlp = spacy.load("en_core_web_sm")
         self.last_entry = ""

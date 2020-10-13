@@ -1,13 +1,26 @@
 class DebugLog:
 
+    calling_class = ""
+    debug_output = False
+
+    def set_debugging(self, output_on):
+        self.debug_output = output_on
+
+    def set_calling_class(self, class_name):
+        self.calling_class = class_name
+
     def error(self, input):
-        print("DEBUG ERROR: ", input)
+        if self.debug_output:
+            print("\n ---- \n DEBUG ERROR: ", input, "\n ---- \n")
 
     def warn(self, input):
-        print("DEBUG WARNING: ", input)
+        if self.debug_output:
+            print("\n !!! DEBUG WARNING: ", input, "\n")
 
     def info(self, input):
-        print("DEBUG INFO: ", input)
+        if self.debug_output:
+            print("\nDEBUG INFO: ", input, "\n")
 
     def debug(self, input):
-        print("DEBUG DEBUG: ", input)
+        if self.debug_output:
+            print("\nDEBUG DEBUG: ", input, "\n")

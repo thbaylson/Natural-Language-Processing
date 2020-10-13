@@ -2,7 +2,12 @@ from ui import ConsoleUI
 from controller import Controller
 from debuglog import DebugLog as debug
 
+debug = debug()
+debug.set_calling_class = "Capstone"
+debug.set_debugging(True)
+
 def main():
+
     # Load base classes
     controller = Controller()
 
