@@ -1,7 +1,8 @@
 class DebugLog:
 
-    calling_class = ""
-    debug_output = False
+    def __init__(self):
+        self.calling_class = ""
+        self.debug_output = False
 
     def set_debugging(self, output_on):
         self.debug_output = output_on

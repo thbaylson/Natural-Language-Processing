@@ -11,9 +11,9 @@ class Logger:
     the data and time the rule was created, and the raw user input sentence.
     """
 
-    debug = debug()
-    debug.set_calling_class = "Logger"
-    debug.set_debugging(True)
+    debuglog = debug()
+    debuglog.set_calling_class = "Logger"
+    debuglog.set_debugging(True)
 
     def log(self, rule: dict, raw: str) -> None:
         """

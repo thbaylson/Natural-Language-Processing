@@ -7,9 +7,9 @@ class ConsoleUI:
     finished = False
     finished_prompt = False
 
-    debug = debug()
-    debug.set_calling_class = "ConsoleUI"
-    debug.set_debugging(True)
+    debuglog = debug()
+    debuglog.set_calling_class = "ConsoleUI"
+    debuglog.set_debugging(True)
 
     def receive_input(self) -> str:
         inp = input("\n0: Quit\n1: Create New Rule\n2: Run an Analysis\n3: Processed Info\n>> ")

@@ -5,9 +5,9 @@ from debuglog import DebugLog as debug
 
 class Reporter:
 
-    debug = debug()
-    debug.set_calling_class = "Reporter"
-    debug.set_debugging(True)
+    debuglog = debug()
+    debuglog.set_calling_class = "Reporter"
+    debuglog.set_debugging(True)
 
     """ Reads the contents of log.json into a Pandas DataFrame. The provided methods can be used to
     run analytics on the data. All methods return a Pandas DataFrame."""
