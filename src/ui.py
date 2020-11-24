@@ -36,7 +36,8 @@ class ConsoleUI:
                             \n3: Employee Policy Count \
                             \n4: Column Error Count \
                             \n5: Find Errors \
-                            \n6: Make WordCloud \
+                            \n6: Find Suspicious Activity \
+                            \n7: Make WordCloud \
                             \n>> ")
         if inp == "0":
             self.finished_prompt = True
@@ -56,6 +57,8 @@ class ConsoleUI:
         elif inp == "5":
             self.report_wrapper("\nFind Errors", report.find_errors())
         elif inp == "6":
+            self.report_wrapper("\nFind Suspicious Activity", report.find_suspicious_activity())
+        elif inp == "7":
             self.make_word_cloud(report.log_df)
 
     def report_wrapper(self, title: str, output) -> None:

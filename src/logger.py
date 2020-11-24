@@ -28,7 +28,7 @@ class Logger:
         
         # If the log file is not empty, read the file and append the new record to it
         if os.stat(filename).st_size > 0:
-            log = pd.read_json(filename, orient= "table")
+            log = pd.read_json(filename, orient= "table", convert_dates= False)
             log = log.append(json_df, ignore_index= True)
             log.to_json(filename, orient= "table")
         # If the log file is empty, write the json_df DataFrame to it
