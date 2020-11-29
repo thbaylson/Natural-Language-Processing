@@ -8,7 +8,7 @@ From root directory:
 `$ pip3 install -r requirements.txt`
 
 ## Example Command
-`$ python3 capstone "Full sentence to be parsed"`
+`$ python3 capstone.py`
 
 # Policy file formatting
 Given sentence `Bob can edit my document.`, the output to the policy file will be:
