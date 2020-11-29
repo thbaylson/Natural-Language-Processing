@@ -27,19 +27,15 @@ class Controller:
 
         # Process input TODO: Is this actually doing anything?
         processed_input = self.split_input(inp)
-        print("Processed: " + str(processed_input))
 
         # The call nlp() uses the default model. To speed things up, we may want to define our own model
         tokens = self.nlp(processed_input)
-        print("Tokens: " + str(tokens))
 
         # Build the grammar
         grammar = self.get_grammar(tokens)
-        print("Grammar: " + str(grammar))
 
         # Scan for target_resource
         target = self.get_target_resource(grammar)
-        print("Target: " + str(target))
 
         # Print out column display to demonstrate processing
         self.print_column_display(grammar)
@@ -84,13 +80,11 @@ class Controller:
         for folder in folders:
             new_files = [file.path.split('\\')[-1] for file in os.scandir(folder) if file.is_file()]
             for f in new_files:
-                print(f)
                 files.append(f)
                 
         
         exts = [file.split('.')[-1] for file in files]
         folderNames = [folder.split('/')[-1] for folder in folders]
-        print(folderNames)
 
         target = ""
         target_type = ""
