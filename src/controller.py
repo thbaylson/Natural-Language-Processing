@@ -25,24 +25,21 @@ class Controller:
         # Load core reference
         logger = Logger()
 
-        # Get local file and folder information
-        local_dir = '../'
-        local_files = [file.path.split('/')[-1] for file in os.scandir(local_dir) if file.is_file()]
-        local_folders = [folder.path.split('/')[-1] for folder in os.scandir(local_dir) if
-                         folder.is_dir()]
-        local_exts = [file.split('.')[-1] for file in local_files]
-
         # Process input TODO: Is this actually doing anything?
         processed_input = self.split_input(inp)
+        print("Processed: " + str(processed_input))
 
         # The call nlp() uses the default model. To speed things up, we may want to define our own model
         tokens = self.nlp(processed_input)
+        print("Tokens: " + str(tokens))
 
         # Build the grammar
         grammar = self.get_grammar(tokens)
+        print("Grammar: " + str(grammar))
 
         # Scan for target_resource
-        target = self.get_target_resource(grammar, local_files, local_folders, local_exts)
+        target = self.get_target_resource(grammar)
+        print("Target: " + str(target))
 
         # Print out column display to demonstrate processing
         self.print_column_display(grammar)
@@ -68,7 +65,7 @@ class Controller:
         return str(inp)
 
 
-    def get_target_resource(self, inp: dict, files: list, folders: list, exts: list) -> dict:
+    def get_target_resource(self, inp: dict) -> dict:
         """
         If a specific file referenced, search locally for the file, confirm it exists, and append:
         (X target_resource (name: document))
@@ -79,6 +76,22 @@ class Controller:
         If no specific file or folder, but items of that type exist in directory, append:
         (X target_resource (case: filetype))
         """
+        local_dir = '../resources'
+        files = [file.path.split('\\')[-1] for file in os.scandir(local_dir) if file.is_file()]
+        folders = ["../resources/" + folder.path.split('\\')[-1] for folder in os.scandir(local_dir) if
+                         folder.is_dir()]
+        
+        for folder in folders:
+            new_files = [file.path.split('\\')[-1] for file in os.scandir(folder) if file.is_file()]
+            for f in new_files:
+                print(f)
+                files.append(f)
+                
+        
+        exts = [file.split('.')[-1] for file in files]
+        folderNames = [folder.split('/')[-1] for folder in folders]
+        print(folderNames)
+
         target = ""
         target_type = ""
         resource_found = False
@@ -93,7 +106,7 @@ class Controller:
         if not resource_found:
             # Search specific folders
             for word in inp:
-                if word in folders:
+                if word in folderNames:
                     target = word
                     target_type = "case"
                     resource_found = True
@@ -169,16 +182,17 @@ class Controller:
                                            token.dep_.lower(),
                                            token.lemma_.lower(),
                                            token.ent_type_.lower()]
+            print(grammar[token.text.lower()])
 
         # Find punctuation in the grammar
-        words_to_remove = []
-        for word in grammar:
-            if 'punct' in grammar[word]:
-                words_to_remove.append(word)
+        #words_to_remove = []
+        #for word in grammar:
+        #    if 'punct' in grammar[word]:
+        #        words_to_remove.append(word)
 
         # Remove punctuation in the grammar
-        for word in words_to_remove:
-            del grammar[word]
+        #for word in words_to_remove:
+        #    del grammar[word]
 
         return grammar
 
