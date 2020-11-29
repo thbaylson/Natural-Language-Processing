@@ -176,7 +176,6 @@ class Controller:
                                            token.dep_.lower(),
                                            token.lemma_.lower(),
                                            token.ent_type_.lower()]
-            print(grammar[token.text.lower()])
 
         # Find punctuation in the grammar
         #words_to_remove = []
@@ -301,7 +300,11 @@ class Controller:
         """
         target = ""
         for word in grammar:
-            if 'poss' in grammar[word]:
+            checkPoss = 'poss'  in grammar[word]
+            checkPropObj = 'dobj' in grammar[word] or 'compound' in grammar[word] or 'nmod' in grammar[word]
+            checkPropN = 'propn' in grammar[word]
+            
+            if checkPoss or (checkPropN and checkPropObj):
                 if word == 'my':
                     home_dir = os.path.expanduser('~')
                     target = home_dir.split("\\")[-1]
